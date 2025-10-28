@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import Link from 'next/link';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { Button } from '@/components/ui/Button'; 
 import ResponsiveLayout from '@/components/layout/ResponsiveLayout';
@@ -61,13 +62,15 @@ const UniversalHero: React.FC = React.memo(() => {
             'flex flex-col sm:flex-row gap-4 justify-center items-center',
             isMobile ? 'mb-8' : 'mb-12'
           )}>
-            <Button
-              size={isMobile ? 'responsive' : 'lg'}
-              variant="gradient"
-              className="w-full sm:w-auto"
-            >
-              Find Chefs Now
-            </Button>
+            <Link href="/signup">
+              <Button
+                size={isMobile ? 'responsive' : 'lg'}
+                variant="gradient"
+                className="w-full sm:w-auto"
+              >
+                Find Chefs Now
+              </Button>
+            </Link>
             <Button
               size={isMobile ? 'responsive' : 'lg'}
               variant="outline"
