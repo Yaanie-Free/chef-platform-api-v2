@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Button } from '../ui/button';
+import { Button } from '../ui/Button';
 import { Card } from '../ui/card';
 import { Input } from '../ui/input';
 import { ScrollArea } from '../ui/scroll-area';
@@ -32,7 +32,7 @@ import {
   X
 } from 'lucide-react';
 
-interface Message {
+export interface Message {
   id: string;
   senderId: string;
   senderName: string;
@@ -56,7 +56,7 @@ interface Message {
   };
 }
 
-interface Conversation {
+export interface Conversation {
   id: string;
   participantId: string;
   participantName: string;
@@ -143,7 +143,7 @@ export default function EnhancedMessaging({
   const handleSendMessage = () => {
     if (!messageInput.trim() || !selectedConversation) return;
 
-    const message: Message = {
+    const base: Omit<Message, 'replyTo'> = {
       id: Date.now().toString(),
       senderId: currentUserId,
       senderName: 'You',
@@ -152,12 +152,18 @@ export default function EnhancedMessaging({
       isFromUser: true,
       type: 'text',
       isRead: false,
-      replyTo: replyToMessage ? {
-        id: replyToMessage.id,
-        content: replyToMessage.content,
-        senderName: replyToMessage.senderName
-      } : undefined
     };
+
+    const message: Message = replyToMessage
+      ? {
+          ...base,
+          replyTo: {
+            id: replyToMessage.id,
+            content: replyToMessage.content,
+            senderName: replyToMessage.senderName,
+          },
+        }
+      : { ...base };
 
     onSendMessage(selectedConversation.id, message);
     setMessageInput('');
@@ -273,7 +279,7 @@ export default function EnhancedMessaging({
             <Input
               placeholder="Search conversations..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
               className="pl-10"
             />
           </div>
@@ -522,7 +528,7 @@ export default function EnhancedMessaging({
                   <Input
                     placeholder="Type a message..."
                     value={messageInput}
-                    onChange={(e) => setMessageInput(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMessageInput(e.target.value)}
                     onKeyPress={handleKeyPress}
                     className="pr-20"
                   />

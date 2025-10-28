@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button } from './ui/button';
+import { Button } from './ui/Button';
 import { Card } from './ui/card';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
@@ -15,9 +15,6 @@ import {
   Search, 
   ChevronDown, 
   ChevronRight,
-  Clock,
-  CheckCircle,
-  AlertCircle,
   Star,
   FileText,
   Users,

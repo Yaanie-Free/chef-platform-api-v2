@@ -79,10 +79,10 @@ export default function CustomerSignupFlow() {
     specialRequests: ''
   });
 
-  const [errors, setErrors] = useState<Partial<CustomerData>>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof CustomerData, string>>>({});
 
   const validateStep1 = () => {
-    const newErrors: Partial<CustomerData> = {};
+    const newErrors: Partial<Record<keyof CustomerData, string>> = {};
     
     if (!customerData.firstName.trim()) newErrors.firstName = 'First name is required';
     if (!customerData.lastName.trim()) newErrors.lastName = 'Last name is required';
@@ -110,7 +110,10 @@ export default function CustomerSignupFlow() {
         return;
       }
       setCustomerData({ ...customerData, profilePhoto: file });
-      setErrors({ ...errors, profilePhoto: undefined });
+      setErrors(prev => {
+        const { profilePhoto, ...rest } = prev;
+        return rest;
+      });
     }
   };
 

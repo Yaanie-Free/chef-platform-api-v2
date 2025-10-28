@@ -1,8 +1,8 @@
-import EnhancedMessaging from '@/components/messaging/EnhancedMessaging';
+import EnhancedMessaging, { Conversation } from '@/components/messaging/EnhancedMessaging';
 import React from 'react';
 
 // Mock data for demonstration
-const mockConversations = [
+const mockConversations: Conversation[] = [
   {
     id: '1',
     participantId: 'chef1',
