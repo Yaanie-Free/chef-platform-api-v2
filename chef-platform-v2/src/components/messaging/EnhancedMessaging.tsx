@@ -95,7 +95,6 @@ export default function EnhancedMessaging({
   const [recordingTime, setRecordingTime] = useState(0);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [replyToMessage, setReplyToMessage] = useState<Message | null>(null);
-  const [isTyping, setIsTyping] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const messageEndRef = useRef<HTMLDivElement>(null);
@@ -113,16 +112,7 @@ export default function EnhancedMessaging({
     void onMuteConversation;
   }, [onArchiveConversation, onPinConversation, onMuteConversation]);
 
-  // Typing indicator
-  useEffect(() => {
-    if (messageInput.trim()) {
-      setIsTyping(true);
-      const timer = setTimeout(() => setIsTyping(false), 1000);
-      return () => clearTimeout(timer);
-    } else {
-      setIsTyping(false);
-    }
-  }, [messageInput]);
+  // (typing indicator removed to satisfy strict noUnusedLocals)
 
   const filteredConversations = conversations.filter(conv => {
     const matchesSearch = conv.participantName.toLowerCase().includes(searchQuery.toLowerCase()) ||

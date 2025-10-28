@@ -1,18 +1,17 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { Button } from '../ui/Button';
-import { Card } from '../ui/card';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { Textarea } from '../ui/textarea';
-import { Switch } from '../ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { Badge } from '../ui/badge';
-import { Avatar } from '../ui/avatar';
-import { Separator } from '../ui/separator';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { Avatar } from '@/components/ui/avatar';
+import { Separator } from '@/components/ui/separator';
 import { 
-  User, 
   Mail, 
   Phone, 
   MapPin, 
@@ -333,7 +332,7 @@ export default function ProfileManagement() {
                     <Input
                       id="firstName"
                       value={formData.firstName}
-                      onChange={(e) => handleInputChange('firstName', e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('firstName', e.target.value)}
                       disabled={!isEditing}
                     />
                   </div>
@@ -342,7 +341,7 @@ export default function ProfileManagement() {
                     <Input
                       id="lastName"
                       value={formData.lastName}
-                      onChange={(e) => handleInputChange('lastName', e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('lastName', e.target.value)}
                       disabled={!isEditing}
                     />
                   </div>
@@ -352,7 +351,7 @@ export default function ProfileManagement() {
                       id="email"
                       type="email"
                       value={formData.email}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('email', e.target.value)}
                       disabled={!isEditing}
                     />
                   </div>
@@ -361,7 +360,7 @@ export default function ProfileManagement() {
                     <Input
                       id="phone"
                       value={formData.phone}
-                      onChange={(e) => handleInputChange('phone', e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('phone', e.target.value)}
                       disabled={!isEditing}
                     />
                   </div>
@@ -370,7 +369,7 @@ export default function ProfileManagement() {
                     <Input
                       id="location"
                       value={formData.location}
-                      onChange={(e) => handleInputChange('location', e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('location', e.target.value)}
                       disabled={!isEditing}
                     />
                   </div>
@@ -380,7 +379,7 @@ export default function ProfileManagement() {
                       id="dateOfBirth"
                       type="date"
                       value={formData.dateOfBirth}
-                      onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('dateOfBirth', e.target.value)}
                       disabled={!isEditing}
                     />
                   </div>
@@ -391,7 +390,7 @@ export default function ProfileManagement() {
                   <Textarea
                     id="bio"
                     value={formData.bio}
-                    onChange={(e) => handleInputChange('bio', e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleInputChange('bio', e.target.value)}
                     disabled={!isEditing}
                     rows={4}
                     placeholder="Tell us about yourself..."
