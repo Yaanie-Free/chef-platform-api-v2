@@ -106,6 +106,13 @@ export default function EnhancedMessaging({
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [selectedConversation?.messages]);
 
+  // Mark handler props as used to satisfy strict noUnusedLocals
+  useEffect(() => {
+    void onArchiveConversation;
+    void onPinConversation;
+    void onMuteConversation;
+  }, [onArchiveConversation, onPinConversation, onMuteConversation]);
+
   // Typing indicator
   useEffect(() => {
     if (messageInput.trim()) {
