@@ -6,7 +6,14 @@ import ResponsiveLayout from '@/components/layout/ResponsiveLayout';
 import { cn } from '@/lib/utils';
 import { ChefHat, Star, Users, MapPin } from 'lucide-react';
 
-const UniversalHero: React.FC = () => {
+const STATS = [
+  { number: '500+', label: 'Chefs', icon: ChefHat },
+  { number: '10K+', label: 'Happy Customers', icon: Users },
+  { number: '50+', label: 'Cities', icon: MapPin },
+  { number: '4.9★', label: 'Average Rating', icon: Star },
+] as const;
+
+const UniversalHero: React.FC = React.memo(() => {
   const isMobile = useMediaQuery('(max-width: 767px)');
   const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
   const isDesktop = useMediaQuery('(min-width: 1024px)');
@@ -75,12 +82,7 @@ const UniversalHero: React.FC = () => {
             'grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8',
             isMobile ? 'mt-8' : 'mt-12'
           )}>
-            {[
-              { number: '500+', label: 'Chefs', icon: ChefHat },
-              { number: '10K+', label: 'Happy Customers', icon: Users },
-              { number: '50+', label: 'Cities', icon: MapPin },
-              { number: '4.9★', label: 'Average Rating', icon: Star }
-            ].map((stat, index) => (
+            {STATS.map((stat, index) => (
               <div key={index} className="text-center">
                 <div className="flex justify-center mb-2">
                   <stat.icon className={cn(
@@ -107,6 +109,6 @@ const UniversalHero: React.FC = () => {
       </ResponsiveLayout>
     </section>
   );
-};
+});
 
 export default UniversalHero;
