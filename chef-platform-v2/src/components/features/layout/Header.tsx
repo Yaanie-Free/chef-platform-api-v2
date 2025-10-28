@@ -22,6 +22,12 @@ export default function Header() {
             <Link href="/become-a-chef" className="text-gray-700 hover:text-primary">
               Become a Chef
             </Link>
+            <Link href="/messages" className="text-gray-700 hover:text-primary">
+              Messages
+            </Link>
+            <Link href="/support" className="text-gray-700 hover:text-primary">
+              Support
+            </Link>
             <Link href="/signup" className="text-gray-700 hover:text-primary">
               Sign Up
             </Link>
