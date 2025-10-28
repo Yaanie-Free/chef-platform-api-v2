@@ -2,10 +2,37 @@
 
 // Correctly imports your custom global CSS with the Inter font setup
 import './globals.css'; 
+import type { Metadata, Viewport } from 'next';
 
-export const metadata = {
-  title: 'ChefConnect Web',
-  description: 'Your new clean platform for chef services',
+export const metadata: Metadata = {
+  title: {
+    default: 'ChefConnect Web',
+    template: '%s | ChefConnect',
+  },
+  description: 'Find and book top-rated private chefs in South Africa.',
+  applicationName: 'ChefConnect',
+  icons: [{ rel: 'icon', url: '/favicon.ico' }],
+  openGraph: {
+    title: 'ChefConnect Web',
+    description: 'Find and book top-rated private chefs in South Africa.',
+    type: 'website',
+    locale: 'en_ZA',
+    siteName: 'ChefConnect',
+    url: 'https://example.com',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ChefConnect Web',
+    description: 'Find and book top-rated private chefs in South Africa.',
+  },
+  metadataBase: new URL('https://example.com'),
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b1220' },
+  ],
 };
 
 export default function RootLayout({
@@ -15,10 +42,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      {/* The empty className is essential. It prevents Next.js from injecting
-          the Geist font variables that were causing the error. 
-      */}
-      <body className=""> 
+      <body className="min-h-screen bg-background text-foreground"> 
         {children}
       </body>
     </html>
