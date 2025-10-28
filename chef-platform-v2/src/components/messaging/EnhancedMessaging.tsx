@@ -7,7 +7,7 @@ import { Input } from '../ui/input';
 import { ScrollArea } from '../ui/scroll-area';
 import { Avatar } from '../ui/avatar';
 import { Badge } from '../ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '../ui/tabs';
 import { 
   MessageCircle, 
   Send, 
@@ -18,13 +18,8 @@ import {
   Smile, 
   MoreVertical,
   Search,
-  Filter,
-  Archive,
-  Star,
   Pin,
-  Trash2,
   Download,
-  Image as ImageIcon,
   FileText,
   Volume2,
   Play,
