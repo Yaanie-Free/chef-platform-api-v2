@@ -25,9 +25,10 @@ interface ChefCardProps {
   onPass: (chefId: string) => void;
   onContact?: (chefId: string) => void;
   onViewReviews?: (chefId: string) => void;
+  onOpenDetail?: (chefId: string) => void;
 }
 
-export function ChefCard({ chef, onLike, onPass, onContact, onViewReviews }: ChefCardProps) {
+export function ChefCard({ chef, onLike, onPass, onContact, onViewReviews, onOpenDetail }: ChefCardProps) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationDirection, setAnimationDirection] = useState<'left' | 'right' | null>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -82,7 +83,7 @@ export function ChefCard({ chef, onLike, onPass, onContact, onViewReviews }: Che
         <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
           <HoverCard>
             <HoverCardTrigger asChild>
-              <div className="cursor-pointer select-none">
+              <div className="cursor-pointer select-none" onClick={() => onOpenDetail?.(chef.id)}>
                 <h3 className="text-3xl mb-2">{chef.name} {chef.surname}</h3>
                 <div className="flex items-center gap-2 text-white/90">
                   <MapPin className="w-4 h-4" />
