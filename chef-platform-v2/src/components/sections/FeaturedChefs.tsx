@@ -2,6 +2,7 @@
 import React from 'react';
 import { Filter } from 'lucide-react';
 import { ChefCard } from '@/components/cards/ChefCard';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 const MOCK_CHEFS = [
   {
@@ -72,17 +73,17 @@ export default function FeaturedChefs() {
         </div>
 
         <div className="relative">
-          <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4 -mx-4 px-4 scrollbar-none">
-            {MOCK_CHEFS.map((chef) => (
-              <div key={chef.id} className="snap-start">
-                <ChefCard
-                  chef={chef}
-                  onLike={handleLike}
-                  onPass={handlePass}
-                />
-              </div>
-            ))}
-          </div>
+          <Carousel className="px-4" opts={{ align: 'start', loop: false }}>
+            <CarouselContent className="gap-6">
+              {MOCK_CHEFS.map((chef) => (
+                <CarouselItem key={chef.id} className="basis-auto">
+                  <ChefCard chef={chef} onLike={handleLike} onPass={handlePass} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex" />
+            <CarouselNext className="hidden md:flex" />
+          </Carousel>
         </div>
       </div>
     </section>
