@@ -3,6 +3,7 @@ import React from 'react';
 import { Filter } from 'lucide-react';
 import { ChefCard } from '@/components/cards/ChefCard';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { ChefDetailModal } from '@/components/modals/ChefDetailModal';
 
 const MOCK_CHEFS = [
   {
@@ -61,8 +62,14 @@ const MOCK_CHEFS = [
 ];
 
 export default function FeaturedChefs() {
+  const [openId, setOpenId] = React.useState<string | null>(null);
+  const selected = React.useMemo(() => MOCK_CHEFS.find(c => c.id === openId) || null, [openId]);
   const handleLike = (id: string) => {};
   const handlePass = (id: string) => {};
+  const handleOpenDetail = (id: string) => setOpenId(id);
+  const handleCloseDetail = () => setOpenId(null);
+  const handleBookNow = (chef: any) => {};
+  const handleSendMessage = (chef: any) => {};
 
   return (
     <section className="py-12">
@@ -77,7 +84,7 @@ export default function FeaturedChefs() {
             <CarouselContent className="gap-6">
               {MOCK_CHEFS.map((chef) => (
                 <CarouselItem key={chef.id} className="basis-auto">
-                  <ChefCard chef={chef} onLike={handleLike} onPass={handlePass} />
+                  <ChefCard chef={chef} onLike={handleLike} onPass={handlePass} onOpenDetail={handleOpenDetail} />
                 </CarouselItem>
               ))}
             </CarouselContent>
@@ -85,6 +92,7 @@ export default function FeaturedChefs() {
             <CarouselNext className="hidden md:flex" />
           </Carousel>
         </div>
+        <ChefDetailModal chef={selected as any} isOpen={!!openId} onClose={handleCloseDetail} onBookNow={handleBookNow} onSendMessage={handleSendMessage} />
       </div>
     </section>
   );

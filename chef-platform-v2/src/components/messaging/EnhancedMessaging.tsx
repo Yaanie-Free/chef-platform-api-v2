@@ -76,6 +76,7 @@ interface EnhancedMessagingProps {
   onArchiveConversation: (conversationId: string) => void;
   onPinConversation: (conversationId: string) => void;
   onMuteConversation: (conversationId: string) => void;
+  initialParticipantId?: string;
 }
 
 export default function EnhancedMessaging({
@@ -85,7 +86,8 @@ export default function EnhancedMessaging({
   onStartCall,
   onArchiveConversation,
   onPinConversation,
-  onMuteConversation
+  onMuteConversation,
+  initialParticipantId
 }: EnhancedMessagingProps) {
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
   const [messageInput, setMessageInput] = useState('');
@@ -113,6 +115,15 @@ export default function EnhancedMessaging({
   }, [onArchiveConversation, onPinConversation, onMuteConversation]);
 
   // (typing indicator removed to satisfy strict noUnusedLocals)
+
+  // Preselect conversation by participantId when provided
+  useEffect(() => {
+    if (!initialParticipantId || !conversations?.length) return;
+    const match = conversations.find(c => c.participantId === initialParticipantId);
+    if (match && selectedConversation?.id !== match.id) {
+      setSelectedConversation(match);
+    }
+  }, [initialParticipantId, conversations]);
 
   const filteredConversations = conversations.filter(conv => {
     const matchesSearch = conv.participantName.toLowerCase().includes(searchQuery.toLowerCase()) ||
