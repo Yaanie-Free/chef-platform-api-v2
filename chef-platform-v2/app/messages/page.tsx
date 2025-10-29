@@ -83,7 +83,7 @@ const mockConversations: Conversation[] = [
   }
 ];
 
-export default function MessagesPage() {
+export default function MessagesPage({ searchParams }: { searchParams?: { participant?: string } }) {
   const handleSendMessage = (conversationId: string, message: any) => {
     console.log('Sending message to conversation:', conversationId, message);
     // In a real app, this would send the message to the backend
@@ -114,6 +114,7 @@ export default function MessagesPage() {
       <EnhancedMessaging
         currentUserId="user123"
         conversations={mockConversations}
+        initialParticipantId={searchParams?.participant}
         onSendMessage={handleSendMessage}
         onStartCall={handleStartCall}
         onArchiveConversation={handleArchiveConversation}
