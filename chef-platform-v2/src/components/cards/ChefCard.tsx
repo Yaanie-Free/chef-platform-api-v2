@@ -4,6 +4,7 @@ import { Star, MapPin, Heart, X, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
 interface ChefCardProps {
   chef: {
@@ -79,11 +80,36 @@ export function ChefCard({ chef, onLike, onPass, onContact, onViewReviews }: Che
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 via-transparent to-rose-500/10" />
         <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-          <h3 className="text-3xl mb-2">{chef.name} {chef.surname}</h3>
-          <div className="flex items-center gap-2 text-white/90">
-            <MapPin className="w-4 h-4" />
-            <span>{chef.location}</span>
-          </div>
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <div className="cursor-pointer select-none">
+                <h3 className="text-3xl mb-2">{chef.name} {chef.surname}</h3>
+                <div className="flex items-center gap-2 text-white/90">
+                  <MapPin className="w-4 h-4" />
+                  <span>{chef.location}</span>
+                </div>
+              </div>
+            </HoverCardTrigger>
+            <HoverCardContent className="text-sm">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  <span className="text-white">{chef.rating.toFixed(1)}</span>
+                  <span className="text-white/70">({chef.reviewCount} reviews)</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {chef.specialties.slice(0, 3).map((s, i) => (
+                    <span key={i} className="rounded-md px-2 py-0.5 bg-white/5 text-white/90">{s}</span>
+                  ))}
+                </div>
+                {onContact && (
+                  <Button size="sm" variant="outline" className="rounded-xl">
+                    <MessageCircle className="w-4 h-4 mr-2" /> Contact
+                  </Button>
+                )}
+              </div>
+            </HoverCardContent>
+          </HoverCard>
         </div>
       </div>
 
