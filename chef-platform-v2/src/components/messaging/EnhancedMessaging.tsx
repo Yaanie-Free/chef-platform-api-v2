@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Button } from '../ui/Button';
-import { Card } from '../ui/card';
-import { Input } from '../ui/input';
-import { ScrollArea } from '../ui/scroll-area';
-import { Avatar } from '../ui/avatar';
-import { Badge } from '../ui/badge';
-import { Tabs, TabsList, TabsTrigger } from '../ui/tabs';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Avatar } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   MessageCircle, 
   Send, 
@@ -76,7 +76,7 @@ interface EnhancedMessagingProps {
   onArchiveConversation: (conversationId: string) => void;
   onPinConversation: (conversationId: string) => void;
   onMuteConversation: (conversationId: string) => void;
-  initialParticipantId?: string;
+  initialParticipantId?: string | undefined;
 }
 
 export default function EnhancedMessaging({
