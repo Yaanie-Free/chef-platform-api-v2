@@ -4,6 +4,7 @@ import { Filter } from 'lucide-react';
 import { ChefCard } from '@/components/cards/ChefCard';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { ChefDetailModal } from '@/components/modals/ChefDetailModal';
+import { useRouter } from 'next/navigation';
 
 const MOCK_CHEFS = [
   {
@@ -62,6 +63,7 @@ const MOCK_CHEFS = [
 ];
 
 export default function FeaturedChefs() {
+  const router = useRouter();
   const [openId, setOpenId] = React.useState<string | null>(null);
   const selected = React.useMemo(() => MOCK_CHEFS.find(c => c.id === openId) || null, [openId]);
   const handleLike = (id: string) => {};
@@ -69,7 +71,9 @@ export default function FeaturedChefs() {
   const handleOpenDetail = (id: string) => setOpenId(id);
   const handleCloseDetail = () => setOpenId(null);
   const handleBookNow = (chef: any) => {};
-  const handleSendMessage = (chef: any) => {};
+  const handleSendMessage = (chef: any) => {
+    router.push(`/messages?participant=${encodeURIComponent(chef.id || chef)}`);
+  };
 
   return (
     <section className="py-12">
@@ -84,7 +88,13 @@ export default function FeaturedChefs() {
             <CarouselContent className="gap-6">
               {MOCK_CHEFS.map((chef) => (
                 <CarouselItem key={chef.id} className="basis-auto">
-                  <ChefCard chef={chef} onLike={handleLike} onPass={handlePass} onOpenDetail={handleOpenDetail} />
+                  <ChefCard
+                    chef={chef}
+                    onLike={handleLike}
+                    onPass={handlePass}
+                    onOpenDetail={handleOpenDetail}
+                    onContact={() => handleSendMessage(chef.id)}
+                  />
                 </CarouselItem>
               ))}
             </CarouselContent>
