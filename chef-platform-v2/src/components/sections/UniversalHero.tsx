@@ -5,14 +5,6 @@ import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { Button } from '@/components/ui/Button'; 
 import ResponsiveLayout from '@/components/layout/ResponsiveLayout';
 import { cn } from '@/lib/utils';
-import { ChefHat, Star, Users, MapPin } from 'lucide-react';
-
-const STATS = [
-  { number: '500+', label: 'Chefs', icon: ChefHat },
-  { number: '10K+', label: 'Happy Customers', icon: Users },
-  { number: '50+', label: 'Cities', icon: MapPin },
-  { number: '4.9★', label: 'Average Rating', icon: Star },
-] as const;
 
 const UniversalHero: React.FC = React.memo(() => {
   const isMobile = useMediaQuery('(max-width: 767px)');
@@ -40,10 +32,7 @@ const UniversalHero: React.FC = React.memo(() => {
             isTablet ? 'text-5xl sm:text-6xl' : 
             'text-6xl sm:text-7xl lg:text-8xl'
           )}>
-            <span className="block">Find Your Perfect</span>
-            <span className="block bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
-              Private Chef
-            </span>
+            <span className="block">Welcome to Table & Plate</span>
           </h1>
 
           {/* Subheading */}
@@ -53,8 +42,7 @@ const UniversalHero: React.FC = React.memo(() => {
             isTablet ? 'text-lg sm:text-xl' : 
             'text-xl sm:text-2xl'
           )}>
-            Connect with top-rated private chefs in South Africa. 
-            Experience fine dining in the comfort of your own home.
+            Luxury made personal
           </p>
 
           {/* CTA Buttons */}
@@ -68,7 +56,7 @@ const UniversalHero: React.FC = React.memo(() => {
                 variant="gradient"
                 className="w-full sm:w-auto"
               >
-                Find Chefs Now
+                Get started
               </Button>
             </Link>
             <Button
@@ -78,35 +66,6 @@ const UniversalHero: React.FC = React.memo(() => {
             >
               How It Works
             </Button>
-          </div>
-
-          {/* Stats */}
-          <div className={cn(
-            'grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8',
-            isMobile ? 'mt-8' : 'mt-12'
-          )}>
-            {STATS.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="flex justify-center mb-2">
-                  <stat.icon className={cn(
-                    'text-pink-500',
-                    isMobile ? 'h-6 w-6' : 'h-8 w-8'
-                  )} />
-                </div>
-                <div className={cn(
-                  'font-bold text-foreground',
-                  isMobile ? 'text-2xl' : 'text-3xl sm:text-4xl'
-                )}>
-                  {stat.number}
-                </div>
-                <div className={cn(
-                  'text-muted-foreground',
-                  isMobile ? 'text-sm' : 'text-base'
-                )}>
-                  {stat.label}
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </ResponsiveLayout>
