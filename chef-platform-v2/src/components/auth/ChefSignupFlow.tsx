@@ -36,9 +36,6 @@ export default function ChefSignupFlow({ modal = false, onClose }: Props) {
   // Step 5
   const [specialties, setSpecialties] = useState<string[]>([]);
   const [experience, setExperience] = useState("");
-  const [priceMin, setPriceMin] = useState("");
-  const [priceMax, setPriceMax] = useState("");
-  const [certifications, setCertifications] = useState<string[]>([]);
 
   const progress = useMemo(() => (step / TOTAL_STEPS) * 100, [step]);
 
@@ -67,11 +64,11 @@ export default function ChefSignupFlow({ modal = false, onClose }: Props) {
     if (step === 2) return otp.length === 6;
     if (step === 3) return !!firstName && !!lastName && !!city;
     if (step === 4) return !!profilePhoto && gallery.length >= 1; // relax to 1 for now
-    return specialties.length > 0 && !!experience && !!priceMin && !!priceMax;
+    return specialties.length > 0 && !!experience;
   };
 
   const CardBody = (
-      <Card className="w-full max-w-[640px] bg-neutral-900 text-white rounded-[24px] md:rounded-[28px] shadow-2xl border border-white/10 overflow-hidden relative">
+      <Card className="w-full max-w-[640px] max-h-[85vh] bg-neutral-900 text-white rounded-[24px] md:rounded-[28px] shadow-2xl border border-white/10 overflow-hidden relative flex flex-col">
         {modal && (
           <button aria-label="Close" onClick={onClose} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-muted/70 hover:bg-muted flex items-center justify-center">
             <X className="w-4 h-4" />
@@ -85,7 +82,7 @@ export default function ChefSignupFlow({ modal = false, onClose }: Props) {
           </div>
         </div>
 
-        <div className="p-6 md:p-8 space-y-6">
+        <div className="p-6 md:p-8 space-y-6 flex-1 overflow-y-auto">
           {step === 1 && (
             <div>
               <div className="text-center mb-6 md:mb-8">
@@ -241,27 +238,7 @@ export default function ChefSignupFlow({ modal = false, onClose }: Props) {
                   </Select>
                 </div>
 
-                {/* Price range */}
-                <div>
-                  <label className="block text-sm mb-2">Price range per person</label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <Input type="number" placeholder="Min (R)" value={priceMin} onChange={(e) => setPriceMin(e.target.value)} className="rounded-2xl" />
-                    <Input type="number" placeholder="Max (R)" value={priceMax} onChange={(e) => setPriceMax(e.target.value)} className="rounded-2xl" />
-                  </div>
-                </div>
-
-                {/* Certifications */}
-                <div>
-                  <label className="block text-sm mb-2">Certifications (optional)</label>
-                  <div className="grid grid-cols-1 gap-2">
-                    {["Culinary Arts Degree","Professional Chef Certificate","Food Safety & Hygiene","Wine Sommelier","Pastry Specialist"].map((c) => (
-                      <label key={c} className="flex items-center gap-3 p-3 rounded-2xl border border-border">
-                        <input type="checkbox" checked={certifications.includes(c)} onChange={() => toggle(certifications, setCertifications, c)} className="rounded-full" />
-                        <span className="text-sm">{c}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
+                
               </div>
             </div>
           )}

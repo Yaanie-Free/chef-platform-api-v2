@@ -1,10 +1,11 @@
 "use client";
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Star, MapPin, Heart, X, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
 
 interface ChefCardProps {
   chef: {
@@ -31,8 +32,7 @@ interface ChefCardProps {
 export function ChefCard({ chef, onLike, onPass, onContact, onViewReviews, onOpenDetail }: ChefCardProps) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationDirection, setAnimationDirection] = useState<'left' | 'right' | null>(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [thumbApi, setThumbApi] = useState<CarouselApi | null>(null);
 
   const handleAction = (action: 'like' | 'pass') => {
     setIsAnimating(true);
@@ -43,21 +43,14 @@ export function ChefCard({ chef, onLike, onPass, onContact, onViewReviews, onOpe
   };
 
   useEffect(() => {
-    if (!chef.gallery || chef.gallery.length === 0) return;
-    const interval = setInterval(() => {
-      if (!scrollRef.current) return;
-      const maxScroll = scrollRef.current.scrollWidth - scrollRef.current.clientWidth;
-      const newPosition = scrollPosition >= maxScroll ? 0 : scrollPosition + 120;
-      scrollRef.current.scrollTo({ left: newPosition, behavior: 'smooth' });
-      setScrollPosition(newPosition);
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [scrollPosition, chef.gallery]);
-
-  useEffect(() => {
-    setScrollPosition(0);
-    if (scrollRef.current) scrollRef.current.scrollTo({ left: 0 });
-  }, [chef.id]);
+    if (!thumbApi || !chef.gallery || chef.gallery.length === 0) return;
+    const id = setInterval(() => {
+      if (!thumbApi) return;
+      if (thumbApi.canScrollNext()) thumbApi.scrollNext();
+      else thumbApi.scrollTo(0);
+    }, 2200);
+    return () => clearInterval(id);
+  }, [thumbApi, chef.gallery, chef.id]);
 
   return (
     <div
@@ -173,23 +166,27 @@ export function ChefCard({ chef, onLike, onPass, onContact, onViewReviews, onOpe
 
         {chef.gallery && chef.gallery.length > 0 && (
           <div className="pt-2">
-            <div
-              ref={scrollRef}
-              className="flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            <Carousel
+              setApi={setThumbApi}
+              opts={{ loop: true, align: 'start', dragFree: false, containScroll: 'trimSnaps' }}
+              className="w-full"
             >
-              {[...chef.gallery, ...chef.gallery].map((image, index) => (
-                <div key={index} className="flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden border border-white/10 shadow-md hover:scale-105 transition-transform duration-300">
-                  <ImageWithFallback
-                    src={image}
-                    alt={`${chef.name}'s dish ${(index % (chef.gallery!.length)) + 1}`}
-                    width={96}
-                    height={96}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-              ))}
-            </div>
+              <CarouselContent className="-ml-2">
+                {chef.gallery.map((image, index) => (
+                  <CarouselItem key={index} className="pl-2 basis-auto">
+                    <div className="w-24 h-24 rounded-xl overflow-hidden border border-white/10 shadow-md hover:scale-[1.02] transition-transform duration-300">
+                      <ImageWithFallback
+                        src={image}
+                        alt={`${chef.name}'s dish ${index + 1}`}
+                        width={96}
+                        height={96}
+                        className="object-cover w-full h-full"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
           </div>
         )}
       </div>
