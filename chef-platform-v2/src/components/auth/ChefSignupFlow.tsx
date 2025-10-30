@@ -71,7 +71,7 @@ export default function ChefSignupFlow({ modal = false, onClose }: Props) {
   };
 
   const CardBody = (
-      <Card className="w-full max-w-[640px] bg-card rounded-[24px] md:rounded-[28px] shadow-2xl border-border overflow-hidden relative">
+      <Card className="w-full max-w-[640px] bg-neutral-900 text-white rounded-[24px] md:rounded-[28px] shadow-2xl border border-white/10 overflow-hidden relative">
         {modal && (
           <button aria-label="Close" onClick={onClose} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-muted/70 hover:bg-muted flex items-center justify-center">
             <X className="w-4 h-4" />

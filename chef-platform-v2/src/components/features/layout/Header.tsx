@@ -31,10 +31,15 @@ export default function Header({ onChefSignupClick }: HeaderProps) {
           {/* Right: CTAs */}
           <div className="ml-auto flex items-center gap-3">
             {onChefSignupClick ? (
-              <Button onClick={onChefSignupClick} className="hidden sm:inline-flex rounded-2xl bg-primary text-primary-foreground hover:opacity-90">Chef Signup</Button>
+              <Button
+                onClick={onChefSignupClick}
+                className="hidden sm:inline-flex rounded-2xl bg-primary text-primary-foreground hover:opacity-90 ring-1 ring-pink-300/60 shadow-[0_0_18px_rgba(236,72,153,0.45)]"
+              >
+                Chef Signup
+              </Button>
             ) : (
               <Link href="/signup?role=chef" className="hidden sm:inline-flex">
-                <Button className="rounded-2xl bg-primary text-primary-foreground hover:opacity-90">Chef Signup</Button>
+                <Button className="rounded-2xl bg-primary text-primary-foreground hover:opacity-90 ring-1 ring-pink-300/60 shadow-[0_0_18px_rgba(236,72,153,0.45)]">Chef Signup</Button>
               </Link>
             )}
             <Link href="/signup?role=guest" className="text-white/90 hover:text-white text-sm">Guest</Link>
