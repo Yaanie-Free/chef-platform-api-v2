@@ -73,6 +73,19 @@ export function ChefCard({ chef, onLike, onPass, onContact, onViewReviews, onOpe
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 via-transparent to-rose-500/10" />
+        {/* Top-right highlight like button */}
+        <button
+          type="button"
+          onClick={() => handleAction('like')}
+          className="absolute top-4 right-4 h-10 px-4 rounded-2xl bg-black/50 backdrop-blur-sm border border-pink-400/40 text-pink-400 hover:bg-black/60 shadow-[0_0_18px_rgba(236,72,153,0.45)] transition"
+          disabled={isAnimating}
+          aria-label="Like chef"
+        >
+          <div className="flex items-center gap-2">
+            <Heart className="w-5 h-5" />
+            <span className="hidden sm:inline">Like</span>
+          </div>
+        </button>
         <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
           <HoverCard>
             <HoverCardTrigger asChild>
@@ -204,11 +217,11 @@ export function ChefCard({ chef, onLike, onPass, onContact, onViewReviews, onOpe
         <Button
           variant="outline"
           size="lg"
-          className="flex-1 rounded-2xl border-2 border-pink-500 bg-gradient-to-r from-pink-500/10 to-rose-500/10 hover:from-pink-500/20 hover:to-rose-500/20 hover:border-pink-400 transition-all duration-300 shadow-lg"
+          className="flex-1 rounded-2xl border-2 border-white/15 bg-transparent hover:bg-white/5 transition-all duration-300 shadow-lg"
           onClick={() => handleAction('like')}
           disabled={isAnimating}
         >
-          <Heart className="w-5 h-5 text-pink-500" />
+          <Heart className="w-5 h-5 text-white/80" />
         </Button>
       </div>
     </div>
