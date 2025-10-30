@@ -3,7 +3,11 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 
-export default function Header() {
+type HeaderProps = {
+  onChefSignupClick?: () => void;
+};
+
+export default function Header({ onChefSignupClick }: HeaderProps) {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-transparent bg-black/40 backdrop-blur-md">
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -26,9 +30,13 @@ export default function Header() {
 
           {/* Right: CTAs */}
           <div className="ml-auto flex items-center gap-3">
-            <Link href="/signup?role=chef" className="hidden sm:inline-flex">
-              <Button className="rounded-2xl bg-primary text-primary-foreground hover:opacity-90">Chef Signup</Button>
-            </Link>
+            {onChefSignupClick ? (
+              <Button onClick={onChefSignupClick} className="hidden sm:inline-flex rounded-2xl bg-primary text-primary-foreground hover:opacity-90">Chef Signup</Button>
+            ) : (
+              <Link href="/signup?role=chef" className="hidden sm:inline-flex">
+                <Button className="rounded-2xl bg-primary text-primary-foreground hover:opacity-90">Chef Signup</Button>
+              </Link>
+            )}
             <Link href="/signup?role=guest" className="text-white/90 hover:text-white text-sm">Guest</Link>
           </div>
         </div>
