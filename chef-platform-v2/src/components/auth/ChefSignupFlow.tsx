@@ -9,7 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { InputOTP } from "@/components/ui/input-otp";
 import { ArrowLeft, ArrowRight, Check, Upload, X } from "lucide-react";
 
-export default function ChefSignupFlow() {
+type Props = { modal?: boolean; onClose?: () => void };
+
+export default function ChefSignupFlow({ modal = false, onClose }: Props) {
   const TOTAL_STEPS = 5;
   const [step, setStep] = useState(1);
 
@@ -68,9 +70,13 @@ export default function ChefSignupFlow() {
     return specialties.length > 0 && !!experience && !!priceMin && !!priceMax;
   };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center py-10 px-4 bg-black/40 backdrop-blur-sm">
-      <Card className="w-full max-w-xl bg-card rounded-3xl shadow-2xl border-border overflow-hidden">
+  const CardBody = (
+      <Card className="w-full max-w-xl bg-card rounded-3xl shadow-2xl border-border overflow-hidden relative">
+        {modal && (
+          <button aria-label="Close" onClick={onClose} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-muted/70 hover:bg-muted flex items-center justify-center">
+            <X className="w-4 h-4" />
+          </button>
+        )}
         {/* Top bar */}
         <div className="p-6 border-b border-border/60">
           <div className="text-sm mb-3">Step {step} of {TOTAL_STEPS}</div>
@@ -281,6 +287,13 @@ export default function ChefSignupFlow() {
           )}
         </div>
       </Card>
-    </div>
+  );
+
+  if (modal) {
+    return CardBody;
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center py-10 px-4 bg-black/40 backdrop-blur-sm">{CardBody}</div>
   );
 }
