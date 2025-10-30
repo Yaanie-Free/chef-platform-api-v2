@@ -6,7 +6,6 @@ import UniversalHero from '@/components/sections/UniversalHero';
 import FeaturedChefs from '@/components/sections/FeaturedChefs';
 import HowItWorks from '@/components/sections/HowItWorks';
 import CTASection from '@/components/sections/CTASection';
-import TrustBadges from '@/components/sections/TrustBadges';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import ChefSignupFlow from '@/components/auth/ChefSignupFlow';
 
@@ -18,7 +17,6 @@ export default function Home() {
       
       <main className="flex-grow pt-16">
         <UniversalHero />
-        <TrustBadges />
         <FeaturedChefs />
         <HowItWorks />
         <CTASection />
