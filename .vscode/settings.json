@@ -1,8 +1,12 @@
 {
+<<<<<<< HEAD
     "git.ignoreLimitWarning": true,
     "github.copilot.enable": {
         "*": false
     },
     "github.copilot.inlineSuggest.enable": false,
     "github.copilot.chat.enabled": false
+=======
+    "git.ignoreLimitWarning": true
+>>>>>>> 00a5f528 (commit)
 }
