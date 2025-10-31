@@ -1,6 +1,5 @@
 {
   "recommendations": [
-    "anthropic.claude-code",
-    "Continue.continue"
+    "anthropic.claude-code"
   ]
 }
