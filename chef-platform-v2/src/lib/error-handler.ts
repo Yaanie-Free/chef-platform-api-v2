@@ -1,5 +1,11 @@
+// src/lib/error-handler.ts
+// Centralized error handling and logging
+
 import type { ApiError } from '@/types';
 
+/**
+ * Custom error classes
+ */
 export class AppError extends Error {
   public readonly code: string;
   public readonly statusCode: number;

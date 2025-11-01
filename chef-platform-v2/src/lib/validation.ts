@@ -1,3 +1,6 @@
+// src/lib/validation.ts
+// Comprehensive validation with detailed error messages
+
 import { 
   validateEmail, 
   validateMobile, 

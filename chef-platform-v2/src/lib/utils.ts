@@ -1,9 +1,19 @@
+// src/lib/utils.ts
+// Utility functions with proper error handling
+
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
+/**
+ * Merge Tailwind classes safely
+ */
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+/**
+ * Format currency for South African Rand
+ */
 export function formatCurrency(amount: number, currency: string = 'ZAR'): string {
   try {
     return new Intl.NumberFormat('en-ZA', {
@@ -18,6 +28,9 @@ export function formatCurrency(amount: number, currency: string = 'ZAR'): string
   }
 }
 
+/**
+ * Format date in a human-readable way
+ */
 export function formatDate(date: Date | string, format: 'short' | 'long' | 'relative' = 'short'): string {
   try {
     const dateObj = typeof date === 'string' ? new Date(date) : date;
@@ -37,7 +50,9 @@ export function formatDate(date: Date | string, format: 'short' | 'long' | 'rela
   }
 }
 
-
+/**
+ * Format relative date (e.g., "2 hours ago")
+ */
 function formatRelativeDate(date: Date): string {
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);

@@ -1,3 +1,8 @@
+// src/lib/hooks.ts
+/**
+ * Custom React hooks for reusable logic
+ */
+
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { BREAKPOINTS } from './constants';
 import { logger } from './error-handler';
