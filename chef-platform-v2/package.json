@@ -71,7 +71,7 @@
     "socket.io-client": "^4.8.1",
     "sonner": "^1.4.0",
     "stripe": "^19.2.0",
-    "tailwind-merge": "^2.2.1",
+    "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "web-vitals": "^3.5.0"
   },

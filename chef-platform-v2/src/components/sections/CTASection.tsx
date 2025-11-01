@@ -112,22 +112,7 @@ export default function CTASection() {
               <div className="text-4xl font-bold text-white mb-2">98%</div>
               <div className="text-white/90 text-sm">Satisfaction Rate</div>
             </div>
-
-            {/* Large Feature Card */}
-            <div className="col-span-2 bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-              <h3 className="text-white font-bold text-lg mb-2">
-                🎉 Limited Time Offer
-              </h3>
-              <p className="text-white/90 text-sm mb-4">
-                Get 15% off your first booking. Use code <span className="font-mono font-bold">CHEF15</span> at checkout.
-              </p>
-              <div className="text-xs text-white/70">
-                Valid until December 31, 2024
-              </div>
-            </div>
-          </div>
-        </div>
-
+            
         {/* Trust Badges */}
         <div className="mt-12 pt-12 border-t border-white/20">
           <div className="flex flex-wrap justify-center items-center gap-8">
