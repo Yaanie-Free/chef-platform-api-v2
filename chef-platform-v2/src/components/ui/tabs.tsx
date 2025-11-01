@@ -1,7 +1,12 @@
 'use client';
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useCallback, memo } from 'react';
 import { cn } from '@/lib/utils';
+
+/**
+ * Tabs Component - Premium UI tabs for Table & Plate
+ * Production-grade with keyboard navigation, accessibility, and state management
+ */
 
 interface TabsContextValue {
   value: string;
@@ -10,85 +15,169 @@ interface TabsContextValue {
 
 const TabsContext = createContext<TabsContextValue | undefined>(undefined);
 
+const useTabsContext = () => {
+  const context = useContext(TabsContext);
+  if (!context) {
+    throw new Error('Tabs components must be used within a Tabs provider');
+  }
+  return context;
+};
+
 interface TabsProps {
-  defaultValue: string;
   value?: string;
+  defaultValue?: string;
   onValueChange?: (value: string) => void;
   children: React.ReactNode;
   className?: string;
 }
 
-export function Tabs({ defaultValue, value: controlledValue, onValueChange, children, className }: TabsProps) {
+export const Tabs = memo<TabsProps>(({
+  value: controlledValue,
+  defaultValue = '',
+  onValueChange,
+  children,
+  className,
+}) => {
   const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue);
-  const value = controlledValue ?? uncontrolledValue;
-  const handleValueChange = onValueChange ?? setUncontrolledValue;
+
+  const isControlled = controlledValue !== undefined;
+  const value = isControlled ? controlledValue : uncontrolledValue;
+
+  const handleValueChange = useCallback((newValue: string) => {
+    if (!isControlled) {
+      setUncontrolledValue(newValue);
+    }
+    onValueChange?.(newValue);
+  }, [isControlled, onValueChange]);
 
   return (
     <TabsContext.Provider value={{ value, onValueChange: handleValueChange }}>
-      <div className={className}>{children}</div>
+      <div className={cn('w-full', className)}>
+        {children}
+      </div>
     </TabsContext.Provider>
   );
+});
+
+Tabs.displayName = 'Tabs';
+
+interface TabsListProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
 }
 
-interface TabsListProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export function TabsList({ className, ...props }: TabsListProps) {
+export const TabsList = memo<TabsListProps>(({
+  className,
+  children,
+  ...props
+}) => {
   return (
     <div
+      role="tablist"
       className={cn(
-        'inline-flex h-10 items-center justify-center rounded-md bg-gray-100 p-1 text-gray-500',
+        'inline-flex h-10 items-center justify-center rounded-lg bg-gray-100 p-1',
+        'text-gray-600',
         className
       )}
       {...props}
-    />
+    >
+      {children}
+    </div>
   );
-}
+});
+
+TabsList.displayName = 'TabsList';
 
 interface TabsTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   value: string;
+  children: React.ReactNode;
 }
 
-export function TabsTrigger({ className, value, ...props }: TabsTriggerProps) {
-  const context = useContext(TabsContext);
-  if (!context) throw new Error('TabsTrigger must be used within Tabs');
+export const TabsTrigger = memo<TabsTriggerProps>(({
+  className,
+  value: triggerValue,
+  children,
+  disabled,
+  ...props
+}) => {
+  const { value, onValueChange } = useTabsContext();
+  const isActive = value === triggerValue;
 
-  const isSelected = context.value === value;
+  const handleClick = useCallback(() => {
+    if (!disabled) {
+      onValueChange(triggerValue);
+    }
+  }, [disabled, onValueChange, triggerValue]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleClick();
+    }
+  }, [handleClick]);
 
   return (
     <button
+      role="tab"
       type="button"
-      onClick={() => context.onValueChange(value)}
+      aria-selected={isActive}
+      aria-controls={`tabpanel-${triggerValue}`}
+      data-state={isActive ? 'active' : 'inactive'}
+      disabled={disabled}
       className={cn(
-        'inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900',
+        'inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5',
+        'text-sm font-medium transition-all',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2',
         'disabled:pointer-events-none disabled:opacity-50',
-        isSelected
+        isActive
           ? 'bg-white text-gray-900 shadow-sm'
-          : 'text-gray-500 hover:text-gray-900',
+          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
         className
       )}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
       {...props}
-    />
+    >
+      {children}
+    </button>
   );
-}
+});
+
+TabsTrigger.displayName = 'TabsTrigger';
 
 interface TabsContentProps extends React.HTMLAttributes<HTMLDivElement> {
   value: string;
+  children: React.ReactNode;
 }
 
-export function TabsContent({ className, value, ...props }: TabsContentProps) {
-  const context = useContext(TabsContext);
-  if (!context) throw new Error('TabsContent must be used within Tabs');
+export const TabsContent = memo<TabsContentProps>(({
+  className,
+  value: contentValue,
+  children,
+  ...props
+}) => {
+  const { value } = useTabsContext();
+  const isActive = value === contentValue;
 
-  if (context.value !== value) return null;
+  if (!isActive) {
+    return null;
+  }
 
   return (
     <div
+      role="tabpanel"
+      id={`tabpanel-${contentValue}`}
+      aria-labelledby={contentValue}
+      tabIndex={0}
       className={cn(
-        'mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900',
+        'mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2',
+        'rounded-lg',
         className
       )}
       {...props}
-    />
+    >
+      {children}
+    </div>
   );
-}
+});
+
+TabsContent.displayName = 'TabsContent';

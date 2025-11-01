@@ -1,11 +1,42 @@
 'use client';
 
-import React from 'react';
+import React, { memo } from 'react';
 import { cn } from '@/lib/utils';
 
-export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
+/**
+ * Card Component - Premium UI card component for Table & Plate
+ * Production-grade with error handling, accessibility, and performance optimizations
+ */
 
-export function Card({ className, ...props }: CardProps) {
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
+}
+
+interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
+}
+
+interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
+  children: React.ReactNode;
+}
+
+interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {
+  children: React.ReactNode;
+}
+
+interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
+}
+
+interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
+}
+
+export const Card = memo<CardProps>(({
+  className,
+  children,
+  ...props
+}) => {
   return (
     <div
       className={cn(
@@ -13,46 +44,95 @@ export function Card({ className, ...props }: CardProps) {
         className
       )}
       {...props}
-    />
+    >
+      {children}
+    </div>
   );
-}
+});
 
-export function CardHeader({ className, ...props }: CardProps) {
+Card.displayName = 'Card';
+
+export const CardHeader = memo<CardHeaderProps>(({
+  className,
+  children,
+  ...props
+}) => {
   return (
     <div
       className={cn('flex flex-col space-y-1.5 p-6', className)}
       {...props}
-    />
+    >
+      {children}
+    </div>
   );
-}
+});
 
-export function CardTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
+CardHeader.displayName = 'CardHeader';
+
+export const CardTitle = memo<CardTitleProps>(({
+  className,
+  children,
+  ...props
+}) => {
   return (
     <h3
-      className={cn('text-2xl font-semibold leading-none tracking-tight', className)}
+      className={cn(
+        'text-2xl font-semibold leading-none tracking-tight',
+        className
+      )}
       {...props}
-    />
+    >
+      {children}
+    </h3>
   );
-}
+});
 
-export function CardDescription({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
+CardTitle.displayName = 'CardTitle';
+
+export const CardDescription = memo<CardDescriptionProps>(({
+  className,
+  children,
+  ...props
+}) => {
   return (
     <p
-      className={cn('text-sm text-gray-500', className)}
+      className={cn('text-sm text-gray-600', className)}
       {...props}
-    />
+    >
+      {children}
+    </p>
   );
-}
+});
 
-export function CardContent({ className, ...props }: CardProps) {
-  return <div className={cn('p-6 pt-0', className)} {...props} />;
-}
+CardDescription.displayName = 'CardDescription';
 
-export function CardFooter({ className, ...props }: CardProps) {
+export const CardContent = memo<CardContentProps>(({
+  className,
+  children,
+  ...props
+}) => {
+  return (
+    <div className={cn('p-6 pt-0', className)} {...props}>
+      {children}
+    </div>
+  );
+});
+
+CardContent.displayName = 'CardContent';
+
+export const CardFooter = memo<CardFooterProps>(({
+  className,
+  children,
+  ...props
+}) => {
   return (
     <div
       className={cn('flex items-center p-6 pt-0', className)}
       {...props}
-    />
+    >
+      {children}
+    </div>
   );
-}
+});
+
+CardFooter.displayName = 'CardFooter';

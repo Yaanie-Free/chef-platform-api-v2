@@ -112,20 +112,22 @@ export default function CTASection() {
               <div className="text-4xl font-bold text-white mb-2">98%</div>
               <div className="text-white/90 text-sm">Satisfaction Rate</div>
             </div>
-            
-        {/* Trust Badges */}
-        <div className="mt-12 pt-12 border-t border-white/20">
-          <div className="flex flex-wrap justify-center items-center gap-8">
-            <div className="text-white/90 text-sm font-medium">Trusted by:</div>
-            <div className="flex flex-wrap justify-center gap-6">
-              {['Corporate Clients', 'Event Planners', 'Private Families', 'Restaurants'].map((badge) => (
-                <div
-                  key={badge}
-                  className="px-4 py-2 bg-white/10 rounded-full text-white text-sm font-medium backdrop-blur-sm"
-                >
-                  {badge}
-                </div>
-              ))}
+          </div>
+
+          {/* Trust Badges */}
+          <div className="mt-12 pt-12 border-t border-white/20">
+            <div className="flex flex-wrap justify-center items-center gap-8">
+              <div className="text-white/90 text-sm font-medium">Trusted by:</div>
+              <div className="flex flex-wrap justify-center gap-6">
+                {['Corporate Clients', 'Event Planners', 'Private Families', 'Restaurants'].map((badge) => (
+                  <div
+                    key={badge}
+                    className="px-4 py-2 bg-white/10 rounded-full text-white text-sm font-medium backdrop-blur-sm"
+                  >
+                    {badge}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
