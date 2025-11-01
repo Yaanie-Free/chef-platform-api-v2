@@ -1,7 +1,4 @@
-// app/layout.tsx (FINAL CLEANED CODE)
-
-// Correctly imports your custom global CSS with the Inter font setup
-import './globals.css'; 
+import './globals.css';
 import type { Metadata, Viewport } from 'next';
 
 export const metadata: Metadata = {
@@ -29,10 +26,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0b1220' },
-  ],
+  themeColor: '#111111', // always dark mode
 };
 
 export default function RootLayout({
@@ -41,8 +35,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-background text-foreground"> 
+    <html lang="en" className="dark">
+      <body className="min-h-screen bg-background text-foreground antialiased">
         {children}
       </body>
     </html>

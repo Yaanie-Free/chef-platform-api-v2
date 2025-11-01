@@ -9,19 +9,22 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        /* 🌕 Primary (Amber / Gold) */
         primary: {
-          DEFAULT: '#FF6B35',
-          50: '#FFF3EE',
-          100: '#FFE1D4',
-          200: '#FFB499',
-          300: '#FF8E66',
-          400: '#FF6B35',
-          500: '#FF4A03',
-          600: '#D13A00',
-          700: '#9F2C00',
-          800: '#6D1E00',
-          900: '#3B1000'
+          DEFAULT: '#f59e0b', // Amber 500
+          50: '#fffbeb',
+          100: '#fef3c7',
+          200: '#fde68a',
+          300: '#fcd34d',
+          400: '#fbbf24',
+          500: '#f59e0b',
+          600: '#d97706',
+          700: '#b45309',
+          800: '#92400e',
+          900: '#78350f',
         },
+
+        /* 🌑 Secondary (Teal accent retained from earlier if needed) */
         secondary: {
           DEFAULT: '#2EC4B6',
           50: '#E6F7F5',
@@ -33,49 +36,65 @@ module.exports = {
           600: '#1B746C',
           700: '#134E47',
           800: '#0B2A26',
-          900: '#041211'
-        }
+          900: '#041211',
+        },
+
+        /* 🖤 Dark Theme Base */
+        black: '#000000',
+        white: '#ffffff',
+        gray: {
+          900: '#111111',
+          800: '#1a1a1a',
+          400: '#9ca3af',
+          300: '#d1d5db',
+        },
+        background: '#111111',
+        foreground: '#d1d5db',
       },
+
+      fontFamily: {
+        serif: ['Georgia', 'serif'], // For luxury headings
+      },
+
       screens: {
-        'xs': '320px',
-        'sm': '640px',
-        'md': '768px',
-        'lg': '1024px',
-        'xl': '1280px',
+        xs: '320px',
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
         '2xl': '1536px',
         '3xl': '1920px',
         '4xl': '2560px',
-        'mobile': {'max': '767px'},
-        'tablet': {'min': '768px', 'max': '1023px'},
-        'laptop': {'min': '1024px', 'max': '1279px'},
-        'desktop': {'min': '1280px', 'max': '1919px'},
-        'ultrawide': {'min': '1920px'},
-        // Height-based breakpoints
-        'h-sm': {'raw': '(min-height: 640px)'},
-        'h-md': {'raw': '(min-height: 768px)'},
-        'h-lg': {'raw': '(min-height: 1024px)'},
-        // Orientation
-        'portrait': {'raw': '(orientation: portrait)'},
-        'landscape': {'raw': '(orientation: landscape)'},
-        // Touch devices
-        'touch': {'raw': '(hover: none) and (pointer: coarse)'},
-        'no-touch': {'raw': '(hover: hover) and (pointer: fine)'},
+        mobile: { max: '767px' },
+        tablet: { min: '768px', max: '1023px' },
+        laptop: { min: '1024px', max: '1279px' },
+        desktop: { min: '1280px', max: '1919px' },
+        ultrawide: { min: '1920px' },
+        'h-sm': { raw: '(min-height: 640px)' },
+        'h-md': { raw: '(min-height: 768px)' },
+        'h-lg': { raw: '(min-height: 1024px)' },
+        portrait: { raw: '(orientation: portrait)' },
+        landscape: { raw: '(orientation: landscape)' },
+        touch: { raw: '(hover: none) and (pointer: coarse)' },
+        'no-touch': { raw: '(hover: hover) and (pointer: fine)' },
       },
+
       spacing: {
-        '18': '4.5rem',
-        '88': '22rem',
-        '128': '32rem',
-        '144': '36rem',
-        '160': '40rem',
-        '176': '44rem',
-        '192': '48rem',
+        18: '4.5rem',
+        88: '22rem',
+        128: '32rem',
+        144: '36rem',
+        160: '40rem',
+        176: '44rem',
+        192: '48rem',
       },
+
       fontSize: {
-        'xs': ['0.75rem', { lineHeight: '1rem' }],
-        'sm': ['0.875rem', { lineHeight: '1.25rem' }],
-        'base': ['1rem', { lineHeight: '1.5rem' }],
-        'lg': ['1.125rem', { lineHeight: '1.75rem' }],
-        'xl': ['1.25rem', { lineHeight: '1.75rem' }],
+        xs: ['0.75rem', { lineHeight: '1rem' }],
+        sm: ['0.875rem', { lineHeight: '1.25rem' }],
+        base: ['1rem', { lineHeight: '1.5rem' }],
+        lg: ['1.125rem', { lineHeight: '1.75rem' }],
+        xl: ['1.25rem', { lineHeight: '1.75rem' }],
         '2xl': ['1.5rem', { lineHeight: '2rem' }],
         '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
         '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
@@ -85,16 +104,18 @@ module.exports = {
         '8xl': ['6rem', { lineHeight: '1' }],
         '9xl': ['8rem', { lineHeight: '1' }],
       },
+
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.3s ease-out',
         'slide-down': 'slideDown 0.3s ease-out',
         'scale-in': 'scaleIn 0.2s ease-out',
         'bounce-gentle': 'bounceGentle 2s infinite',
-        'blob': 'blob 7s infinite',
-        'float': 'float 6s ease-in-out infinite',
+        blob: 'blob 7s infinite',
+        float: 'float 6s ease-in-out infinite',
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
+
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
@@ -127,12 +148,14 @@ module.exports = {
           '50%': { transform: 'translateY(-20px)' },
         },
       },
+
       aspectRatio: {
         '4/3': '4 / 3',
         '3/2': '3 / 2',
         '16/9': '16 / 9',
         '21/9': '21 / 9',
       },
+
       gridTemplateColumns: {
         'auto-fit-200': 'repeat(auto-fit, minmax(200px, 1fr))',
         'auto-fit-250': 'repeat(auto-fit, minmax(250px, 1fr))',
@@ -143,13 +166,14 @@ module.exports = {
       },
     },
   },
+
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
     require('@tailwindcss/aspect-ratio'),
-    require('@tailwindcss/container-queries'), 
+    require('@tailwindcss/container-queries'),
     require('tailwindcss-animate'),
-    function({ addUtilities }) {
+    function ({ addUtilities }) {
       addUtilities({
         '.touch-target': {
           'min-height': '44px',
@@ -167,5 +191,3 @@ module.exports = {
     },
   ],
 };
-
-

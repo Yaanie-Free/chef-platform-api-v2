@@ -1,31 +1,25 @@
-import Header from '@/components/features/layout/Header';
-import Footer from '@/components/features/layout/Footer';
-import UniversalHero from '@/components/sections/UniversalHero';
-import FeaturedChefs from '@/components/sections/FeaturedChefs';
-import HowItWorks from '@/components/sections/HowItWorks';
-import Cuisines from '@/components/sections/Cuisines';
-import Testimonials from '@/components/sections/Testimonials';
-import PopularCities from '@/components/sections/PopularCities';
-import CTASection from '@/components/sections/CTASection';
+import LuxuryHeader from '@/components/luxury/LuxuryHeader';
+import LuxuryFooter from '@/components/luxury/LuxuryFooter';
+import LuxuryHero from '@/components/luxury/LuxuryHero';
 import TrustBadges from '@/components/sections/TrustBadges';
+import FeaturedChefs from '@/components/sections/FeaturedChefs';
+import Testimonials from '@/components/sections/Testimonials';
+import CTASection from '@/components/sections/CTASection';
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+    <div className="min-h-screen flex flex-col bg-black">
+      <LuxuryHeader />
       
-      <main className="flex-grow pt-16">
-        <UniversalHero />
+      <main className="flex-grow">
+        <LuxuryHero />
         <TrustBadges />
         <FeaturedChefs />
-        <HowItWorks />
-        <Cuisines />
-        <PopularCities />
         <Testimonials />
         <CTASection />
       </main>
       
-      <Footer />
+      <LuxuryFooter />
     </div>
   );
 }

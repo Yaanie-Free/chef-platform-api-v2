@@ -38,7 +38,7 @@ const badges = [
 
 export default function TrustBadges() {
   return (
-    <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white border-y border-gray-200">
+    <section className="py-12 px-4 sm:px-6 lg:px-8 bg-black border-y border-amber-900/20">
       <div className="max-w-7xl mx-auto">
         {/* Optional Title - can be removed for cleaner look */}
         <div className="text-center mb-8">
