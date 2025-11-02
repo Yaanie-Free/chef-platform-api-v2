@@ -6,13 +6,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 /**
- * FINAL HEADER IMPLEMENTATION: SPACED & SMOOTHED TRANSITIONS
- * ✅ Fixed Spacing: Navigation links are grouped and centered.
- * ✅ Smooth Transitions: Uses long duration CSS for slow, appearance/position changes.
+ * FINAL HEADER IMPLEMENTATION: LENGTH ADJUSTMENT
+ * ✅ Pill component width remains constant in all states.
+ * ✅ Pill component length is doubled in the expanded state.
+ * ✅ Smooth transitions applied to vertical padding.
  */
 
 // ============================================
-// CONFIGURATION (No change, kept for context)
+// CONFIGURATION
 // ============================================
 
 const NAV_ITEMS = [
@@ -47,10 +48,10 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
   const isExpanded = !isScrolled || isHovered; 
 
   // --- STYLING LOGIC ---
-
-  // Outer Container Styling: Apply transition to everything for smooth movement.
-  const outerContainerClass = `left-1/2 -translate-x-1/2 mx-auto transition-all duration-700 ease-out ${ // INCREASED DURATION to 700ms for smooth movement
-    isScrolled ? 'top-4 max-w-7xl' : 'top-6 max-w-7xl'
+  
+  // Outer Container Styling: Max-width is constant. Position adjusts slightly.
+  const outerContainerClass = `left-1/2 -translate-x-1/2 mx-auto transition-all duration-700 ease-out max-w-7xl ${
+    isScrolled ? 'top-4' : 'top-6' // Position adjustment for floating effect
   }`;
   
   // Inner Background Styling: Dark, smoky background for the pill.
@@ -58,16 +59,16 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
     ? 'bg-gray-800/95 shadow-2xl'
     : 'bg-gray-900/90 backdrop-blur-md shadow-xl'; 
   
-  // Padding & Text size adjust on scroll/hover state
-  const headerPaddingClass = isExpanded ? 'py-4 md:py-5' : 'py-2 md:py-3';
-  const logoTextClass = isExpanded ? 'text-2xl text-white' : 'text-xl text-white';
+  // Vertical Padding Control (The Length Adjustment)
+  // Expanded: Py-8/Py-10 (Roughly double the current py-4/py-5)
+  // Collapsed: Py-4/Py-5 (Current small size)
+  const headerPaddingClass = isExpanded ? 'py-8 md:py-10' : 'py-4 md:py-5'; 
   
-  // Navigation visibility: Apply transition directly to the links container
+  // Text size/color
+  const logoTextClass = isExpanded ? 'text-3xl text-white' : 'text-2xl text-white'; // Adjusted text size to match larger pill
   const navOpacityClass = isExpanded 
-    ? 'opacity-100 transition-opacity duration-500 delay-200' // Slow fade in
-    : 'opacity-0 pointer-events-none transition-opacity duration-300'; // Slow fade out
-  
-  // Link colors within the pill
+    ? 'opacity-100 transition-opacity duration-500 delay-200'
+    : 'opacity-0 pointer-events-none transition-opacity duration-300';
   const navTextColorClass = isExpanded ? 'text-gray-300' : 'text-gray-400';
 
   return (
@@ -77,7 +78,8 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
       onMouseLeave={() => isScrolled && setIsHovered(false)}
     >
       <div
-        className={`rounded-full border border-gray-700 transition-all duration-700 ease-out ${innerBgClass} ${headerPaddingClass}`} // INCREASED DURATION for background/size change
+        // Note: transition-all will now smoothly animate the padding change
+        className={`rounded-full border border-gray-700 transition-all duration-700 ease-out ${innerBgClass} ${headerPaddingClass}`}
       >
         <nav className="mx-auto px-6 max-w-full">
           <div className="flex items-center justify-between gap-4 md:gap-8">
@@ -92,7 +94,6 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
 
             {/* Center: Navigation Links (Grouped and Centered) */}
             <div 
-                // key fix: Removed flex-grow and justify-center. Added mx-auto for centering the group.
                 className={`hidden lg:flex items-center gap-10 mx-auto flex-shrink-0 ${navOpacityClass}`}
             >
                 {NAV_ITEMS.map((item) => (
