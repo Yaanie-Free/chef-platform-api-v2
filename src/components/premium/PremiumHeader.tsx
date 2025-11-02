@@ -60,7 +60,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Find a Chef', href: '/', mobile: true, desktop: true },
   { label: 'Messages', href: '/messages', mobile: true, desktop: true },
   { label: 'Support', href: '/support', mobile: true, desktop: true },
-  { label: 'Become a Chef', href: '/signup?type=chef', mobile: true, desktop: true },
+  { label: 'Become a Chef', href: '/signup', mobile: true, desktop: true },
 ];
 
 // ============================================
