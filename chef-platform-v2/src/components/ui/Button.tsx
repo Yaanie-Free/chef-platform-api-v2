@@ -1,19 +1,12 @@
-// src/components/ui/Button.tsx
 'use client';
 
 import React, { forwardRef, ButtonHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 
-/**
- * Button Variants
- */
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'outline' | 'danger';
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
 
-/**
- * Button Props Interface
- */
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Visual style variant */
   variant?: ButtonVariant;
