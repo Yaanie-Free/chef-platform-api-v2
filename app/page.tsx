@@ -1,15 +1,10 @@
-﻿// app/page.tsx
-import PremiumHeader from '@/components/premium/PremiumHeader';
+﻿import PremiumHeader from '@/components/premium/PremiumHeader';
 import PremiumHero from '@/components/premium/PremiumHero';
 import PremiumFooter from '@/components/premium/PremiumFooter';
-import FeaturedChefs from '@/components/sections/FeaturedChefs';
-import TrustBadges from '@/components/sections/TrustBadges';
-import Testimonials from '@/components/sections/Testimonials';
-import CTASection from '@/components/sections/CTASection';
 
 export const metadata = {
   title: 'Table & Plate - Find Your Perfect Private Chef',
-  description: 'Book luxury private chefs in South Africa',
+  description: 'Book luxury private chefs in South Africa for unforgettable dining experiences.',
 };
 
 export default function Home() {
@@ -19,10 +14,11 @@ export default function Home() {
       
       <main className="flex-grow">
         <PremiumHero />
-        <TrustBadges />
-        <FeaturedChefs /> {/* Chef cards/carousel */}
-        <Testimonials />
-        <CTASection />
+        
+        {/* Placeholder for future sections */}
+        <div className="py-20 text-center text-white">
+          <p className="text-gray-400">More sections coming soon...</p>
+        </div>
       </main>
       
       <PremiumFooter />

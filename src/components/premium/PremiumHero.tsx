@@ -27,7 +27,7 @@ export default function PremiumHero({ className = '' }: { className?: string }) 
             Find Your Chef
           </Link>
           <Link 
-            href="/signup" {/* Changed from /signup?type=chef to /signup */}
+            href="/signup"
             className="px-8 py-4 border border-gray-700 text-white rounded-lg hover:bg-gray-900 transition font-medium text-center"
           >
             Become a Chef
