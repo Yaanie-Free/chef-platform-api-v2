@@ -6,8 +6,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 /**
- * FINAL HEADER IMPLEMENTATION: MOBILE LAYOUT SHIFT
- * ✅ Mobile Layout: Logo | CTA | Menu Icon
+ * FINAL HEADER IMPLEMENTATION: SEAMLESS TRANSITION & 4TH LINK
+ * ✅ Adds 'Docs' link.
+ * ✅ Ensures smooth transition for width, positioning, and opacity.
  */
 
 // ============================================
@@ -27,13 +28,14 @@ const CloseIcon = () => (
 );
 
 // ============================================
-// CONFIGURATION
+// CONFIGURATION (ADDED THE 4TH ITEM)
 // ============================================
 
 const NAV_ITEMS = [
     { label: 'How It Works', href: '/how-it-works' },
     { label: 'Company', href: '/company' },
     { label: 'Support', href: '/support' },
+    { label: 'Review Your Experience', href: '/review' },
 ];
 
 interface PremiumHeaderProps {
@@ -76,19 +78,26 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
 
   // --- STYLING LOGIC ---
   
-  const pillWidthClass = isExpanded ? 'max-w-7xl' : 'max-w-2xl'; 
+  // Horizontal Width Control
+  const pillWidthClass = isExpanded ? 'max-w-7xl' : 'w-max'; // w-max ensures the tight fit when collapsed
   
+  // Outer Container Styling
   const outerContainerClass = `w-full left-1/2 -translate-x-1/2 mx-auto transition-all duration-700 ease-out ${
     isScrolled ? 'top-4' : 'top-6'
   }`;
   
+  // Inner Background Styling
   const innerBgClass = isExpanded 
     ? 'bg-gray-800/95 shadow-2xl'
     : 'bg-gray-900/90 backdrop-blur-md shadow-xl'; 
   
+  // Vertical Padding Control (CONSTANT/SMALL LENGTH)
   const headerPaddingClass = 'py-4 md:py-5'; 
   
+  // Text size/color
   const logoTextClass = isExpanded ? 'text-2xl text-white' : 'text-xl text-white';
+  
+  // Ensure opacity transition runs smoothly
   const navOpacityClass = isExpanded 
     ? 'opacity-100 transition-opacity duration-500 delay-200'
     : 'opacity-0 pointer-events-none transition-opacity duration-300';
@@ -106,15 +115,15 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
         <nav className="mx-auto px-6 max-w-full">
           <div className="flex items-center justify-between gap-4 md:gap-8">
             
-            {/* GROUP 1: Logo (Desktop: Far Left | Mobile: Far Left) */}
+            {/* GROUP 1: Left - Logo and Name */}
             <Link
               href="/"
               className={`font-light hover:text-red-500 transition-colors duration-300 flex-shrink-0 ${logoTextClass} ${isExpanded ? 'block' : 'hidden lg:block'}`}
             >
               Table & Plate
             </Link>
-            
-            {/* Mobile Logo (Visible only when desktop links are hidden) */}
+
+            {/* Mobile Logo (T&P - Visible only when desktop links are hidden) */}
              {!isExpanded && (
                 <Link
                     href="/"
@@ -124,16 +133,17 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
                 </Link>
             )}
 
-
             {/* GROUP 2: Center - Navigation Links (Desktop ONLY) */}
             <div 
-                className={`hidden lg:flex items-center gap-10 flex-shrink-0 ${navOpacityClass} ${isExpanded ? 'ml-[200px]' : 'ml-0'}`}
+                // Ensure flex-grow and justify-center are used for correct centering
+                className={`hidden lg:flex items-center justify-center flex-grow gap-10 ${navOpacityClass}`}
             >
                 {NAV_ITEMS.map((item) => (
                     <Link
                         key={item.href}
                         href={item.href}
-                        className={`text-sm transition-colors ${
+                        // Used a large horizontal margin to ensure spacing
+                        className={`text-sm transition-colors mx-8 ${ 
                             pathname === item.href
                             ? 'text-white font-medium'
                             : `${navTextColorClass} hover:text-white`
@@ -147,7 +157,7 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
             {/* GROUP 3: Right - CTA Button and Menu Icon */}
             <div className="flex items-center flex-shrink-0 space-x-3">
               
-              {/* CTA Button (Placed before Menu icon) */}
+              {/* CTA Button */}
               <Link
                 href="/signup"
                 className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-full hover:bg-red-700 transition-colors shadow-md hover:shadow-lg"
@@ -155,7 +165,7 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
                 Sign Up
               </Link>
               
-              {/* Mobile Menu Icon (Visible on small screens, last element) */}
+              {/* Mobile Menu Icon (Visible on small screens) */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="lg:hidden p-2 text-white hover:bg-gray-700 rounded-full transition-colors"

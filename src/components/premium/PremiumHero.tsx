@@ -14,9 +14,9 @@ export default function PremiumHero({ className = '' }: { className?: string }) 
         </h1>
 
         <p className="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
-          Connect with top-rated private chefs in South Africa.
+          BOO!
           <br />
-          Experience fine dining in the comfort of your own home.
+          You so fine!!!
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
