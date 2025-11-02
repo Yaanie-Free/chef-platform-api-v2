@@ -124,7 +124,7 @@ export default function PremiumFooter({ className = '' }: PremiumFooterProps) {
             © {currentYear} Table & Plate. All rights reserved.
           </p>
           <p className="text-sm text-gray-400">
-            Made with ❤️ in Cape Town, South Africa
+            Made with love in Cape Town, South Africa.
           </p>
         </div>
       </div>

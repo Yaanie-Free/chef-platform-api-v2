@@ -6,11 +6,27 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 /**
- * FINAL HEADER IMPLEMENTATION: VISIBLE WIDTH CHANGE
- * ✅ Expanded View: Wide pill (max-w-7xl)
- * ✅ Collapsed View: Noticeably shorter pill (max-w-3xl)
- * ✅ Height is constant.
+ * FINAL HEADER IMPLEMENTATION: MOBILE ADAPTATION & FLOW FIX
+ * ✅ Mobile view defaults to minimalist, collapsed state.
+ * ✅ Mobile view replaces central links with a Menu Icon.
+ * ✅ Signup button flow fixed.
  */
+
+// ============================================
+// INLINE ICONS (Re-added for mobile menu)
+// ============================================
+
+const MenuIcon = () => (
+  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg className="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+  </svg>
+);
 
 // ============================================
 // CONFIGURATION
@@ -33,31 +49,46 @@ interface PremiumHeaderProps {
 export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // New state for mobile menu
   const pathname = usePathname();
 
-  // SCROLL HANDLER: Checks scroll position
+  // SCROLL HANDLER: Only relevant for DESKTOP (lg) screens
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
+      // Only set scroll state if window width suggests desktop usage
+      if (window.innerWidth >= 1024) { 
+        setIsScrolled(window.scrollY > 100);
+      } else {
+        // Force desktop scroll state to 'scrolled' (minimalist view) on mobile
+        setIsScrolled(true); 
+      }
     };
+
+    handleScroll(); // Initial check
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll); // Check on resize
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    }
   }, []);
 
-  // LOGIC: Determines the visual state
-  const isExpanded = !isScrolled || isHovered; 
+  // LOGIC: Desktop Expansion
+  const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
+  // Expansion logic only applies if NOT on mobile/small screen
+  const isExpanded = isDesktop ? (!isScrolled || isHovered) : false; 
 
   // --- STYLING LOGIC ---
   
-  // Horizontal Width Control (The Length Adjustment) - THIS IS THE KEY CHANGE
-  const pillWidthClass = isExpanded ? 'max-w-7xl' : 'max-w-3xl'; 
+  // Horizontal Width Control: Max-w-7xl expanded, Max-w-xl collapsed/mobile
+  const pillWidthClass = isExpanded ? 'max-w-7xl' : 'max-w-xl'; 
   
   // Outer Container Styling
   const outerContainerClass = `left-1/2 -translate-x-1/2 mx-auto transition-all duration-700 ease-out ${
     isScrolled ? 'top-4' : 'top-6'
   }`;
   
-  // Inner Background Styling
+  // Inner Background Styling: Note: Mobile gets the dark, collapsed style by default.
   const innerBgClass = isExpanded 
     ? 'bg-gray-800/95 shadow-2xl'
     : 'bg-gray-900/90 backdrop-blur-md shadow-xl'; 
@@ -75,16 +106,16 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
   return (
     <header
       className={`fixed z-50 ${outerContainerClass} ${pillWidthClass} ${className}`}
-      onMouseEnter={() => isScrolled && setIsHovered(true)}
-      onMouseLeave={() => isScrolled && setIsHovered(false)}
+      onMouseEnter={() => isDesktop && isScrolled && setIsHovered(true)} // Only hover on desktop/scrolled
+      onMouseLeave={() => isDesktop && isScrolled && setIsHovered(false)} // Only hover on desktop/scrolled
     >
       <div
-        className={`rounded-full border border-gray-700 transition-all duration-700 ease-out ${innerBgClass} ${headerPaddingClass}`}
+        className={`w-full rounded-full border border-gray-700 transition-all duration-700 ease-out ${innerBgClass} ${headerPaddingClass}`}
       >
         <nav className="mx-auto px-6 max-w-full">
           <div className="flex items-center justify-between gap-4 md:gap-8">
             
-            {/* Left: Logo and Name (Far Left) */}
+            {/* Left: Logo and Name */}
             <Link
               href="/"
               className={`font-light hover:text-red-500 transition-colors duration-300 flex-shrink-0 ${logoTextClass}`}
@@ -92,9 +123,8 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
               Table & Plate
             </Link>
 
-            {/* Center: Navigation Links (Grouped and Centered) */}
+            {/* Center: Navigation Links (Desktop ONLY) */}
             <div 
-                // Increased gap to ensure links are distanced when pill is wide
                 className={`hidden lg:flex items-center gap-16 mx-auto flex-shrink-0 ${navOpacityClass}`}
             >
                 {NAV_ITEMS.map((item) => (
@@ -112,16 +142,43 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
                 ))}
             </div>
 
-            {/* Right: CTA Button (Far Right) */}
+            {/* Right Side: Menu Icon (Mobile) / CTA Button (All) */}
             <div className="flex items-center flex-shrink-0">
+                
+              {/* Mobile Menu Icon (Only visible on small screens) */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="lg:hidden p-2 text-white hover:bg-gray-700 rounded-full transition-colors"
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
+              </button>
+              
+              {/* CTA Button - Aligned with text via items-center on parent, no margin issues */}
               <Link
                 href="/signup"
-                className="px-6 py-2 bg-red-600 text-white text-sm font-medium rounded-full hover:bg-red-700 transition-colors shadow-md hover:shadow-lg"
+                className="px-6 py-2 bg-red-600 text-white text-sm font-medium rounded-full hover:bg-red-700 transition-colors shadow-md hover:shadow-lg ml-4 lg:ml-0"
               >
                 Sign Up
               </Link>
             </div>
           </div>
+          
+          {/* Mobile Menu Dropdown (Simplified, light box) */}
+          {mobileMenuOpen && (
+              <div className="lg:hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-3 z-40">
+                  {NAV_ITEMS.map((item) => (
+                      <Link
+                          key={item.href}
+                          href={item.href}
+                          className="block py-2 text-gray-800 hover:text-red-600 transition-colors"
+                          onClick={() => setMobileMenuOpen(false)}
+                      >
+                          {item.label}
+                      </Link>
+                  ))}
+              </div>
+          )}
         </nav>
       </div>
     </header>
