@@ -6,10 +6,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 /**
- * FINAL HEADER IMPLEMENTATION: LENGTH ADJUSTMENT
- * ✅ Pill component width remains constant in all states.
- * ✅ Pill component length is doubled in the expanded state.
- * ✅ Smooth transitions applied to vertical padding.
+ * FINAL HEADER IMPLEMENTATION: EXPANDED WIDTH & CONSTANT HEIGHT
+ * ✅ Vertical padding (height) is constant across all states.
+ * ✅ Horizontal width (length) expands significantly in the first view to space out links.
+ * ✅ Horizontal width contracts in the second view (collapsed).
  */
 
 // ============================================
@@ -49,9 +49,9 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
 
   // --- STYLING LOGIC ---
   
-  // Outer Container Styling: Max-width is constant. Position adjusts slightly.
-  const outerContainerClass = `left-1/2 -translate-x-1/2 mx-auto transition-all duration-700 ease-out max-w-7xl ${
-    isScrolled ? 'top-4' : 'top-6' // Position adjustment for floating effect
+  // Outer Container Styling: Controls position, constant height (through content) and dynamic width.
+  const outerContainerClass = `left-1/2 -translate-x-1/2 mx-auto transition-all duration-700 ease-out ${
+    isScrolled ? 'top-4' : 'top-6'
   }`;
   
   // Inner Background Styling: Dark, smoky background for the pill.
@@ -59,13 +59,12 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
     ? 'bg-gray-800/95 shadow-2xl'
     : 'bg-gray-900/90 backdrop-blur-md shadow-xl'; 
   
-  // Vertical Padding Control (The Length Adjustment)
-  // Expanded: Py-8/Py-10 (Roughly double the current py-4/py-5)
-  // Collapsed: Py-4/Py-5 (Current small size)
-  const headerPaddingClass = isExpanded ? 'py-8 md:py-10' : 'py-4 md:py-5'; 
+  // Horizontal Width Control (The Length Adjustment)
+  // Expanded: Very wide (e.g., max-w-7xl). Collapsed: Significantly reduced (e.g., max-w-5xl).
+  const pillWidthClass = isExpanded ? 'max-w-7xl' : 'max-w-5xl'; 
   
   // Text size/color
-  const logoTextClass = isExpanded ? 'text-3xl text-white' : 'text-2xl text-white'; // Adjusted text size to match larger pill
+  const logoTextClass = isExpanded ? 'text-2xl text-white' : 'text-xl text-white';
   const navOpacityClass = isExpanded 
     ? 'opacity-100 transition-opacity duration-500 delay-200'
     : 'opacity-0 pointer-events-none transition-opacity duration-300';
@@ -73,13 +72,13 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
 
   return (
     <header
-      className={`fixed z-50 ${outerContainerClass} ${className}`}
+      className={`fixed z-50 ${outerContainerClass} ${pillWidthClass} ${className}`}
       onMouseEnter={() => isScrolled && setIsHovered(true)}
       onMouseLeave={() => isScrolled && setIsHovered(false)}
     >
       <div
-        // Note: transition-all will now smoothly animate the padding change
-        className={`rounded-full border border-gray-700 transition-all duration-700 ease-out ${innerBgClass} ${headerPaddingClass}`}
+        // Constant Vertical Padding (py-4/py-5) to maintain constant height.
+        className={`rounded-full border border-gray-700 transition-all duration-700 ease-out ${innerBgClass} py-4 md:py-5`}
       >
         <nav className="mx-auto px-6 max-w-full">
           <div className="flex items-center justify-between gap-4 md:gap-8">
@@ -94,7 +93,8 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
 
             {/* Center: Navigation Links (Grouped and Centered) */}
             <div 
-                className={`hidden lg:flex items-center gap-10 mx-auto flex-shrink-0 ${navOpacityClass}`}
+                // Increased gap (gap-16) to ensure links are distanced when pill is wide
+                className={`hidden lg:flex items-center gap-16 mx-auto flex-shrink-0 ${navOpacityClass}`}
             >
                 {NAV_ITEMS.map((item) => (
                     <Link
