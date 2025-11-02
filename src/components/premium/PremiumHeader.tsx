@@ -6,9 +6,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 /**
- * FINAL HEADER IMPLEMENTATION: MINIMUM WIDTH AND MOBILE CLEAN-UP
- * ✅ Collapsed Width increased to max-w-2xl for better spacing.
- * ✅ Mobile view simplified by removing the logo text.
+ * FINAL HEADER IMPLEMENTATION: MOBILE LAYOUT SHIFT
+ * ✅ Mobile Layout: Logo | CTA | Menu Icon
  */
 
 // ============================================
@@ -54,13 +53,10 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
   // SCROLL HANDLER: Checks scroll position and screen width
   useEffect(() => {
     const handleScroll = () => {
-      // Logic to determine if it's desktop view (width > 1024px)
       const isDesktop = window.innerWidth >= 1024;
-
       if (isDesktop) { 
         setIsScrolled(window.scrollY > 100);
       } else {
-        // Force the minimalist view on mobile by setting isScrolled to true
         setIsScrolled(true); 
       }
     };
@@ -80,23 +76,18 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
 
   // --- STYLING LOGIC ---
   
-  // Collapsed Width increased to max-w-2xl for better spacing
   const pillWidthClass = isExpanded ? 'max-w-7xl' : 'max-w-2xl'; 
   
-  // Outer Container Styling
   const outerContainerClass = `w-full left-1/2 -translate-x-1/2 mx-auto transition-all duration-700 ease-out ${
     isScrolled ? 'top-4' : 'top-6'
   }`;
   
-  // Inner Background Styling
   const innerBgClass = isExpanded 
     ? 'bg-gray-800/95 shadow-2xl'
     : 'bg-gray-900/90 backdrop-blur-md shadow-xl'; 
   
-  // Vertical Padding Control (CONSTANT/SMALL LENGTH)
   const headerPaddingClass = 'py-4 md:py-5'; 
   
-  // Text size/color
   const logoTextClass = isExpanded ? 'text-2xl text-white' : 'text-xl text-white';
   const navOpacityClass = isExpanded 
     ? 'opacity-100 transition-opacity duration-500 delay-200'
@@ -115,18 +106,28 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
         <nav className="mx-auto px-6 max-w-full">
           <div className="flex items-center justify-between gap-4 md:gap-8">
             
-            {/* Left: Logo and Name (Hidden on Mobile/Collapsed) */}
+            {/* GROUP 1: Logo (Desktop: Far Left | Mobile: Far Left) */}
             <Link
               href="/"
-              // Hide on mobile and when collapsed (minimalist view)
               className={`font-light hover:text-red-500 transition-colors duration-300 flex-shrink-0 ${logoTextClass} ${isExpanded ? 'block' : 'hidden lg:block'}`}
             >
               Table & Plate
             </Link>
+            
+            {/* Mobile Logo (Visible only when desktop links are hidden) */}
+             {!isExpanded && (
+                <Link
+                    href="/"
+                    className={`lg:hidden font-light text-xl text-white hover:text-red-500 transition-colors duration-300 flex-shrink-0`}
+                >
+                    T&P
+                </Link>
+            )}
 
-            {/* Center: Navigation Links (Desktop ONLY) */}
+
+            {/* GROUP 2: Center - Navigation Links (Desktop ONLY) */}
             <div 
-                className={`hidden lg:flex items-center gap-16 mx-auto flex-shrink-0 ${navOpacityClass}`}
+                className={`hidden lg:flex items-center gap-10 flex-shrink-0 ${navOpacityClass} ${isExpanded ? 'ml-[200px]' : 'ml-0'}`}
             >
                 {NAV_ITEMS.map((item) => (
                     <Link
@@ -143,10 +144,18 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
                 ))}
             </div>
 
-            {/* Right Side: Menu Icon (Mobile) / CTA Button (All) */}
-            <div className="flex items-center flex-shrink-0">
-                
-              {/* Mobile Menu Icon (Visible on small screens) */}
+            {/* GROUP 3: Right - CTA Button and Menu Icon */}
+            <div className="flex items-center flex-shrink-0 space-x-3">
+              
+              {/* CTA Button (Placed before Menu icon) */}
+              <Link
+                href="/signup"
+                className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-full hover:bg-red-700 transition-colors shadow-md hover:shadow-lg"
+              >
+                Sign Up
+              </Link>
+              
+              {/* Mobile Menu Icon (Visible on small screens, last element) */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="lg:hidden p-2 text-white hover:bg-gray-700 rounded-full transition-colors"
@@ -154,14 +163,6 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
               >
                 {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
               </button>
-              
-              {/* CTA Button */}
-              <Link
-                href="/signup"
-                className="px-6 py-2 bg-red-600 text-white text-sm font-medium rounded-full hover:bg-red-700 transition-colors shadow-md hover:shadow-lg ml-4 lg:ml-0"
-              >
-                Sign Up
-              </Link>
             </div>
           </div>
           
