@@ -6,10 +6,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 /**
- * FINAL HEADER IMPLEMENTATION: FINAL WIDTH ADJUSTMENT
- * ✅ Constant Vertical Padding (Height)
- * ✅ Expanded View: Very Wide Pill (e.g., max-w-7xl)
- * ✅ Collapsed View: Fixed Smaller Width Pill (e.g., max-w-5xl)
+ * FINAL HEADER IMPLEMENTATION: VISIBLE WIDTH CHANGE
+ * ✅ Expanded View: Wide pill (max-w-7xl)
+ * ✅ Collapsed View: Noticeably shorter pill (max-w-3xl)
+ * ✅ Height is constant.
  */
 
 // ============================================
@@ -49,15 +49,15 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
 
   // --- STYLING LOGIC ---
   
-  // Outer Container Styling: Controls position and animation timing.
-  // Horizontal Width Control (The Length Adjustment) - Applied directly here
-  const pillWidthClass = isExpanded ? 'max-w-7xl' : 'max-w-5xl'; // Wider when expanded, smaller when collapsed
+  // Horizontal Width Control (The Length Adjustment) - THIS IS THE KEY CHANGE
+  const pillWidthClass = isExpanded ? 'max-w-7xl' : 'max-w-3xl'; 
   
+  // Outer Container Styling
   const outerContainerClass = `left-1/2 -translate-x-1/2 mx-auto transition-all duration-700 ease-out ${
     isScrolled ? 'top-4' : 'top-6'
   }`;
   
-  // Inner Background Styling: Dark, smoky background for the pill.
+  // Inner Background Styling
   const innerBgClass = isExpanded 
     ? 'bg-gray-800/95 shadow-2xl'
     : 'bg-gray-900/90 backdrop-blur-md shadow-xl'; 
@@ -74,7 +74,6 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
 
   return (
     <header
-      // Apply the dynamic width class here to control the pill's overall horizontal size
       className={`fixed z-50 ${outerContainerClass} ${pillWidthClass} ${className}`}
       onMouseEnter={() => isScrolled && setIsHovered(true)}
       onMouseLeave={() => isScrolled && setIsHovered(false)}
