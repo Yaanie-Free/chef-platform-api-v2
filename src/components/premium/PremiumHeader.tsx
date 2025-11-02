@@ -6,14 +6,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 /**
- * FINAL HEADER IMPLEMENTATION: MOBILE ADAPTATION & FLOW FIX
- * ✅ Mobile view defaults to minimalist, collapsed state.
- * ✅ Mobile view replaces central links with a Menu Icon.
- * ✅ Signup button flow fixed.
+ * FINAL HEADER IMPLEMENTATION: MINIMUM WIDTH AND MOBILE CLEAN-UP
+ * ✅ Collapsed Width increased to max-w-2xl for better spacing.
+ * ✅ Mobile view simplified by removing the logo text.
  */
 
 // ============================================
-// INLINE ICONS (Re-added for mobile menu)
+// INLINE ICONS
 // ============================================
 
 const MenuIcon = () => (
@@ -49,24 +48,26 @@ interface PremiumHeaderProps {
 export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // New state for mobile menu
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  // SCROLL HANDLER: Only relevant for DESKTOP (lg) screens
+  // SCROLL HANDLER: Checks scroll position and screen width
   useEffect(() => {
     const handleScroll = () => {
-      // Only set scroll state if window width suggests desktop usage
-      if (window.innerWidth >= 1024) { 
+      // Logic to determine if it's desktop view (width > 1024px)
+      const isDesktop = window.innerWidth >= 1024;
+
+      if (isDesktop) { 
         setIsScrolled(window.scrollY > 100);
       } else {
-        // Force desktop scroll state to 'scrolled' (minimalist view) on mobile
+        // Force the minimalist view on mobile by setting isScrolled to true
         setIsScrolled(true); 
       }
     };
 
-    handleScroll(); // Initial check
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleScroll); // Check on resize
+    window.addEventListener('resize', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
@@ -75,20 +76,19 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
 
   // LOGIC: Desktop Expansion
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
-  // Expansion logic only applies if NOT on mobile/small screen
   const isExpanded = isDesktop ? (!isScrolled || isHovered) : false; 
 
   // --- STYLING LOGIC ---
   
-  // Horizontal Width Control: Max-w-7xl expanded, Max-w-xl collapsed/mobile
-  const pillWidthClass = isExpanded ? 'max-w-7xl' : 'max-w-xl'; 
+  // Collapsed Width increased to max-w-2xl for better spacing
+  const pillWidthClass = isExpanded ? 'max-w-7xl' : 'max-w-2xl'; 
   
   // Outer Container Styling
-  const outerContainerClass = `left-1/2 -translate-x-1/2 mx-auto transition-all duration-700 ease-out ${
+  const outerContainerClass = `w-full left-1/2 -translate-x-1/2 mx-auto transition-all duration-700 ease-out ${
     isScrolled ? 'top-4' : 'top-6'
   }`;
   
-  // Inner Background Styling: Note: Mobile gets the dark, collapsed style by default.
+  // Inner Background Styling
   const innerBgClass = isExpanded 
     ? 'bg-gray-800/95 shadow-2xl'
     : 'bg-gray-900/90 backdrop-blur-md shadow-xl'; 
@@ -106,8 +106,8 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
   return (
     <header
       className={`fixed z-50 ${outerContainerClass} ${pillWidthClass} ${className}`}
-      onMouseEnter={() => isDesktop && isScrolled && setIsHovered(true)} // Only hover on desktop/scrolled
-      onMouseLeave={() => isDesktop && isScrolled && setIsHovered(false)} // Only hover on desktop/scrolled
+      onMouseEnter={() => isDesktop && isScrolled && setIsHovered(true)}
+      onMouseLeave={() => isDesktop && isScrolled && setIsHovered(false)}
     >
       <div
         className={`w-full rounded-full border border-gray-700 transition-all duration-700 ease-out ${innerBgClass} ${headerPaddingClass}`}
@@ -115,10 +115,11 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
         <nav className="mx-auto px-6 max-w-full">
           <div className="flex items-center justify-between gap-4 md:gap-8">
             
-            {/* Left: Logo and Name */}
+            {/* Left: Logo and Name (Hidden on Mobile/Collapsed) */}
             <Link
               href="/"
-              className={`font-light hover:text-red-500 transition-colors duration-300 flex-shrink-0 ${logoTextClass}`}
+              // Hide on mobile and when collapsed (minimalist view)
+              className={`font-light hover:text-red-500 transition-colors duration-300 flex-shrink-0 ${logoTextClass} ${isExpanded ? 'block' : 'hidden lg:block'}`}
             >
               Table & Plate
             </Link>
@@ -145,7 +146,7 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
             {/* Right Side: Menu Icon (Mobile) / CTA Button (All) */}
             <div className="flex items-center flex-shrink-0">
                 
-              {/* Mobile Menu Icon (Only visible on small screens) */}
+              {/* Mobile Menu Icon (Visible on small screens) */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="lg:hidden p-2 text-white hover:bg-gray-700 rounded-full transition-colors"
@@ -154,7 +155,7 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
                 {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
               </button>
               
-              {/* CTA Button - Aligned with text via items-center on parent, no margin issues */}
+              {/* CTA Button */}
               <Link
                 href="/signup"
                 className="px-6 py-2 bg-red-600 text-white text-sm font-medium rounded-full hover:bg-red-700 transition-colors shadow-md hover:shadow-lg ml-4 lg:ml-0"
