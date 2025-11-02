@@ -24,13 +24,13 @@ export default function PremiumHero({ className = '' }: { className?: string }) 
             href="/discover"
             className="px-8 py-4 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium text-center"
           >
-            Find Your Chef
+            Guest Sign-up
           </Link>
           <Link 
             href="/signup"
             className="px-8 py-4 border border-gray-700 text-white rounded-lg hover:bg-gray-900 transition font-medium text-center"
           >
-            Become a Chef
+            Chef Sign-up
           </Link>
         </div>
       </div>
