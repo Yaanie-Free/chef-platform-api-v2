@@ -6,18 +6,15 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 /**
- * FINAL HEADER IMPLEMENTATION: PILL/THREE-STATE LOGIC
- * ✅ Pill-shaped component when collapsed (Image 2/3 style)
- * ✅ Expanded/Collapsed/Hovered states based on scroll position
- * ✅ Far-left logo, far-right CTA, central nav links
- * ✅ Removed search bar and hamburger menu
+ * FINAL HEADER IMPLEMENTATION: SPACED & SMOOTHED TRANSITIONS
+ * ✅ Fixed Spacing: Navigation links are grouped and centered.
+ * ✅ Smooth Transitions: Uses long duration CSS for slow, appearance/position changes.
  */
 
 // ============================================
-// CONFIGURATION
+// CONFIGURATION (No change, kept for context)
 // ============================================
 
-// Navigation items visible only in the expanded/hovered desktop state
 const NAV_ITEMS = [
     { label: 'How It Works', href: '/how-it-works' },
     { label: 'Company', href: '/company' },
@@ -40,7 +37,6 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
   // SCROLL HANDLER: Checks scroll position
   useEffect(() => {
     const handleScroll = () => {
-      // Set to true if scrolled beyond 100px
       setIsScrolled(window.scrollY > 100);
     };
     window.addEventListener('scroll', handleScroll);
@@ -48,50 +44,56 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
   }, []);
 
   // LOGIC: Determines the visual state
-  // Expanded at top (default), OR expanded by hover when scrolled down
   const isExpanded = !isScrolled || isHovered; 
 
-  // Dynamic Class Names for the Pill effect
-  const headerPaddingClass = isExpanded ? 'py-4 md:py-5' : 'py-2 md:py-3';
-  const logoTextClass = isExpanded ? 'text-2xl' : 'text-xl';
+  // --- STYLING LOGIC ---
+
+  // Outer Container Styling: Apply transition to everything for smooth movement.
+  const outerContainerClass = `left-1/2 -translate-x-1/2 mx-auto transition-all duration-700 ease-out ${ // INCREASED DURATION to 700ms for smooth movement
+    isScrolled ? 'top-4 max-w-7xl' : 'top-6 max-w-7xl'
+  }`;
   
-  // Outer Container Styling: Makes the header component a pill when scrolled
-  const outerContainerClass = isScrolled 
-    ? 'top-4 left-1/2 -translate-x-1/2 max-w-7xl mx-auto rounded-full' // Pill shape when scrolled
-    : 'top-0 left-0 right-0 max-w-full'; // Full width when at top
-
-  // Inner Background Styling: Adds shadow and color
+  // Inner Background Styling: Dark, smoky background for the pill.
   const innerBgClass = isExpanded 
-    ? 'bg-white shadow-xl' // Solid white, strong shadow when expanded
-    : 'bg-white/95 backdrop-blur-md shadow-lg'; // Translucent, blur when collapsed
-
-  // Navigation visibility: hides unless expanded
-  const navOpacityClass = isExpanded ? 'opacity-100' : 'opacity-0 pointer-events-none';
+    ? 'bg-gray-800/95 shadow-2xl'
+    : 'bg-gray-900/90 backdrop-blur-md shadow-xl'; 
+  
+  // Padding & Text size adjust on scroll/hover state
+  const headerPaddingClass = isExpanded ? 'py-4 md:py-5' : 'py-2 md:py-3';
+  const logoTextClass = isExpanded ? 'text-2xl text-white' : 'text-xl text-white';
+  
+  // Navigation visibility: Apply transition directly to the links container
+  const navOpacityClass = isExpanded 
+    ? 'opacity-100 transition-opacity duration-500 delay-200' // Slow fade in
+    : 'opacity-0 pointer-events-none transition-opacity duration-300'; // Slow fade out
+  
+  // Link colors within the pill
+  const navTextColorClass = isExpanded ? 'text-gray-300' : 'text-gray-400';
 
   return (
     <header
-      className={`fixed z-50 transition-all duration-300 ${outerContainerClass} ${className}`}
-      // Apply hover state tracking only if scrolled
+      className={`fixed z-50 ${outerContainerClass} ${className}`}
       onMouseEnter={() => isScrolled && setIsHovered(true)}
       onMouseLeave={() => isScrolled && setIsHovered(false)}
     >
       <div
-        className={`border border-gray-100 transition-all duration-300 ${innerBgClass} ${headerPaddingClass} ${isScrolled ? 'rounded-full' : ''}`}
+        className={`rounded-full border border-gray-700 transition-all duration-700 ease-out ${innerBgClass} ${headerPaddingClass}`} // INCREASED DURATION for background/size change
       >
-        <nav className={`mx-auto px-6 ${isScrolled ? 'max-w-7xl' : 'max-w-full'}`}>
+        <nav className="mx-auto px-6 max-w-full">
           <div className="flex items-center justify-between gap-4 md:gap-8">
             
             {/* Left: Logo and Name (Far Left) */}
             <Link
               href="/"
-              className={`font-light text-gray-900 hover:text-gray-700 transition-all duration-300 flex-shrink-0 ${logoTextClass}`}
+              className={`font-light hover:text-red-500 transition-colors duration-300 flex-shrink-0 ${logoTextClass}`}
             >
               Table & Plate
             </Link>
 
-            {/* Center: Navigation Links (Desktop - Disappear when collapsed) */}
+            {/* Center: Navigation Links (Grouped and Centered) */}
             <div 
-                className={`hidden lg:flex items-center gap-8 transition-all duration-300 flex-grow justify-center ${navOpacityClass}`}
+                // key fix: Removed flex-grow and justify-center. Added mx-auto for centering the group.
+                className={`hidden lg:flex items-center gap-10 mx-auto flex-shrink-0 ${navOpacityClass}`}
             >
                 {NAV_ITEMS.map((item) => (
                     <Link
@@ -99,8 +101,8 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
                         href={item.href}
                         className={`text-sm transition-colors ${
                             pathname === item.href
-                            ? 'text-gray-900 font-medium'
-                            : 'text-gray-600 hover:text-gray-900'
+                            ? 'text-white font-medium'
+                            : `${navTextColorClass} hover:text-white`
                         }`}
                     >
                         {item.label}
@@ -111,8 +113,8 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
             {/* Right: CTA Button (Far Right) */}
             <div className="flex items-center flex-shrink-0">
               <Link
-                href="/signup" // Changed to general /signup
-                className="px-6 py-2 bg-red-600 text-white text-sm font-medium rounded-full hover:bg-red-700 transition-colors"
+                href="/signup"
+                className="px-6 py-2 bg-red-600 text-white text-sm font-medium rounded-full hover:bg-red-700 transition-colors shadow-md hover:shadow-lg"
               >
                 Sign Up
               </Link>
