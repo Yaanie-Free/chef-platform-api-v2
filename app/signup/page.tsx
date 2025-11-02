@@ -1,15 +1,31 @@
-﻿import { Metadata } from 'next';
-import CustomerSignupFlow from '@/components/auth/CustomerSignupFlow';
+// app/page.tsx
+import LuxuryHeader from '@/components/luxury/LuxuryHeader';
+import LuxuryHero from '@/components/luxury/LuxuryHero';
+import LuxuryFooter from '@/components/luxury/LuxuryFooter';
+import TrustBadges from '@/components/sections/TrustBadges';
+import FeaturedChefs from '@/components/sections/FeaturedChefs';
+import Testimonials from '@/components/sections/Testimonials';
+import CTASection from '@/components/sections/CTASection';
 
-export const metadata: Metadata = {
-  title: 'Sign Up - Table & Plate',
-  description: 'Join Table & Plate as a customer to find and book private chefs.',
+export const metadata = {
+  title: 'Table & Plate - Find Your Perfect Private Chef',
+  description: 'Book luxury private chefs for unforgettable dining experiences in South Africa.',
 };
 
-export default function SignupPage() {
+export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50">
-      <CustomerSignupFlow />
+    <div className="min-h-screen flex flex-col bg-black">
+      <LuxuryHeader />
+      
+      <main className="flex-grow">
+        <LuxuryHero />
+        <TrustBadges />
+        <FeaturedChefs />
+        <Testimonials />
+        <CTASection />
+      </main>
+      
+      <LuxuryFooter />
     </div>
   );
 }
