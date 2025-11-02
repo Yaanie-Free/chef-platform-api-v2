@@ -6,13 +6,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 /**
- * SELF-CONTAINED PREMIUM HEADER
- * ✅ Zero external component dependencies
- * ✅ Inline icons (no lucide-react)
- * ✅ Fast loading (single file)
- * ✅ Fully scalable (easy config)
- * ✅ Production-ready
- * ✅ Mobile responsive
+ * SELF-CONTAINED PREMIUM HEADER - THREE-STATE LOGIC
+ * ✅ Fixed at the top (z-50)
+ * ✅ Collapses on scroll, expands on hover (the "design twist")
+ * ✅ Performance-focused: uses simple scroll and CSS transitions
+ * ✅ Uses the pill-shaped search bar and minimalist layout required
  */
 
 // ============================================
@@ -38,47 +36,61 @@ const CloseIcon = () => (
 );
 
 // ============================================
-// TYPES
+// CONFIGURATION
 // ============================================
 
-interface NavItem {
-  label: string;
-  href: string;
-  mobile?: boolean;
-  desktop?: boolean;
-}
+// Navigation items visible only in the expanded/hovered desktop state
+const NAV_ITEMS = [
+    { label: 'Find a Chef', href: '/discover' },
+    { label: 'Messages', href: '/messages' },
+    { label: 'Support', href: '/support' },
+];
 
 interface PremiumHeaderProps {
   className?: string;
 }
 
 // ============================================
-// CONFIGURATION (Scale by adding items here)
-// ============================================
-
-const NAV_ITEMS: NavItem[] = [
-  { label: 'Find a Chef', href: '/', mobile: true, desktop: true },
-  { label: 'Messages', href: '/messages', mobile: true, desktop: true },
-  { label: 'Support', href: '/support', mobile: true, desktop: true },
-  { label: 'Become a Chef', href: '/signup', mobile: true, desktop: true },
-];
-
-// ============================================
 // MAIN COMPONENT
 // ============================================
 
 export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const pathname = usePathname();
+
+  // 1. SCROLL HANDLER: Checks scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      // Set to true if scrolled beyond 100px (fast, simple check)
+      setIsScrolled(window.scrollY > 100);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [pathname]);
 
-  // Handle search
+  // 2. LOGIC: Determines the visual state
+  const isExpanded = !isScrolled || isHovered; // Expanded at top, OR expanded by hover when scrolled down
+
+  // Dynamic Class Names
+  const headerHeightClass = isExpanded ? 'py-4 md:py-5 shadow-lg' : 'py-2 md:py-3 shadow-md';
+  const logoTextClass = isExpanded ? 'text-2xl' : 'text-xl';
+  // Use a solid color when expanded, and slightly transparent/blurred when collapsed
+  const headerBgClass = isExpanded ? 'bg-white' : 'bg-white/90 backdrop-blur-sm'; 
+  
+  // Navigation visibility: hides unless expanded
+  const navOpacityClass = isExpanded ? 'opacity-100' : 'opacity-0 pointer-events-none';
+  
+  // Search bar width adjustment: wide when expanded, narrow when collapsed (central focus)
+  const searchBarWidth = isExpanded ? 'w-full max-w-lg' : 'w-64 max-w-sm'; 
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -89,52 +101,47 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${className}`}
-      onMouseEnter={() => setIsExpanded(true)}
-      onMouseLeave={() => setIsExpanded(false)}
+      // Apply hover state tracking only if scrolled (to enable the collapse/expand feature)
+      onMouseEnter={() => isScrolled && setIsHovered(true)}
+      onMouseLeave={() => isScrolled && setIsHovered(false)}
     >
       <div
-        className={`bg-white border-b border-gray-200 transition-all duration-300 ${
-          isExpanded ? 'py-4 shadow-sm' : 'py-2'
-        }`}
+        className={`border-b border-gray-200 transition-all duration-300 ${headerBgClass} ${headerHeightClass}`}
       >
         <nav className="mx-auto max-w-7xl px-6">
-          {/* Desktop Header */}
-          <div className="flex items-center justify-between gap-8">
-            {/* Logo */}
+          <div className="flex items-center justify-between gap-4 md:gap-8">
+            
+            {/* Left: Logo and Name */}
             <Link
               href="/"
-              className="text-2xl font-light text-gray-900 hover:text-gray-700 transition-colors flex-shrink-0"
+              className={`font-light text-gray-900 hover:text-gray-700 transition-all duration-300 flex-shrink-0 ${logoTextClass}`}
             >
               Table & Plate
             </Link>
 
-            {/* Desktop Navigation */}
-            <div
-              className={`hidden lg:flex items-center gap-8 transition-all duration-300 ${
-                isExpanded ? 'opacity-100' : 'opacity-0 pointer-events-none'
-              }`}
+            {/* Center: Navigation Links (Desktop - Disappear when collapsed) */}
+            <div 
+                className={`hidden lg:flex items-center gap-8 transition-all duration-300 flex-grow justify-center ${navOpacityClass}`}
             >
-              {NAV_ITEMS.filter(item => item.desktop).map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`text-sm transition-colors ${
-                    pathname === item.href
-                      ? 'text-gray-900 font-medium'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+                {NAV_ITEMS.map((item) => (
+                    <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`text-sm transition-colors ${
+                            pathname === item.href
+                            ? 'text-gray-900 font-medium'
+                            : 'text-gray-600 hover:text-gray-900'
+                        }`}
+                    >
+                        {item.label}
+                    </Link>
+                ))}
             </div>
 
-            {/* Right Side: Search + CTA */}
-            <div className="flex items-center gap-4">
-              {/* Desktop Search (when expanded) */}
-              {isExpanded && (
-                <form onSubmit={handleSearch} className="hidden lg:block relative">
-                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            {/* Center-Right: Search Bar (Desktop - Main element when collapsed) */}
+            <div className={`hidden lg:flex justify-center transition-all duration-300 ${isExpanded ? 'flex-shrink-0' : 'flex-grow'}`}>
+                <form onSubmit={handleSearch} className="relative">
+                  <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
                     <SearchIcon />
                   </div>
                   <input
@@ -142,25 +149,26 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
                     placeholder="Search chefs..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-64 pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-500 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 transition-all"
+                    // Pill shape with dynamic width
+                    className={`pl-10 pr-4 py-2 bg-gray-100 border border-gray-300 rounded-full text-sm text-gray-900 placeholder-gray-500 focus:border-red-600 focus:outline-none focus:ring-1 focus:ring-red-600 transition-all ${searchBarWidth}`}
                   />
                 </form>
-              )}
+            </div>
 
-              {/* Desktop CTAs */}
-              <div className="hidden lg:flex items-center gap-3">
-                <Link
-                  href="/signup"
-                  className="px-6 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
-                >
-                  Sign Up
-                </Link>
-              </div>
-
+            {/* Right: CTA Button + Mobile Menu */}
+            <div className="flex items-center gap-4 flex-shrink-0">
+              {/* Desktop CTA (Chef Signup) - Always visible in desktop view for minimalism */}
+              <Link
+                href="/signup?type=chef"
+                className="hidden sm:block px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-full hover:bg-red-700 transition-colors"
+              >
+                Chef Signup
+              </Link>
+              
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                 aria-label="Toggle menu"
               >
                 {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
@@ -168,37 +176,35 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
             </div>
           </div>
 
-          {/* Mobile Search */}
-          <form onSubmit={handleSearch} className="lg:hidden mt-3 relative">
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-              <SearchIcon />
-            </div>
-            <input
-              type="search"
-              placeholder="Search chefs..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-500 focus:border-gray-900 focus:outline-none"
-            />
-          </form>
+          {/* Mobile Search & Menu (Simplified logic from before, but kept for function) */}
+          {!mobileMenuOpen && (
+             <form onSubmit={handleSearch} className="lg:hidden mt-3 relative">
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                <SearchIcon />
+                </div>
+                <input
+                type="search"
+                placeholder="Search chefs..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-sm text-gray-900 placeholder-gray-500 focus:border-red-600 focus:outline-none"
+                />
+            </form>
+          )}
 
-          {/* Mobile Menu */}
+          {/* Mobile Menu (Using simplified NAV_ITEMS for mobile) */}
           {mobileMenuOpen && (
-            <div className="lg:hidden py-4 space-y-3 border-t border-gray-200 mt-4">
-              {NAV_ITEMS.filter(item => item.mobile).map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`block py-2 text-sm transition-colors ${
-                    pathname === item.href
-                      ? 'text-gray-900 font-medium'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
+            <div className="py-4 space-y-3 border-t border-gray-200 mt-4 lg:hidden">
+              {NAV_ITEMS.map((item) => (
+                    <Link
+                        key={item.href}
+                        href={item.href}
+                        className="block py-2 text-sm text-gray-600 hover:text-gray-900"
+                        onClick={() => setMobileMenuOpen(false)}
+                    >
+                        {item.label}
+                    </Link>
+                ))}
               <Link
                 href="/signup"
                 className="block w-full px-6 py-3 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors text-center"
