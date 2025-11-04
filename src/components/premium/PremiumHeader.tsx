@@ -6,9 +6,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 /**
- * FINAL HEADER IMPLEMENTATION: SEAMLESS TRANSITION & 4TH LINK
- * ✅ Adds 'Docs' link.
- * ✅ Ensures smooth transition for width, positioning, and opacity.
+ * FINAL HEADER IMPLEMENTATION: VISUAL INTEGRITY FIX
+ * ✅ Vertical height (padding) is CONSTANT across all views.
+ * ✅ Logo and CTA are locked within the fixed vertical space.
+ * ✅ Expanded: max-w-7xl (Wide)
+ * ✅ Collapsed: max-w-4xl (Visibly smaller, medium length)
  */
 
 // ============================================
@@ -28,7 +30,7 @@ const CloseIcon = () => (
 );
 
 // ============================================
-// CONFIGURATION (ADDED THE 4TH ITEM)
+// CONFIGURATION
 // ============================================
 
 const NAV_ITEMS = [
@@ -78,8 +80,8 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
 
   // --- STYLING LOGIC ---
   
-  // Horizontal Width Control
-  const pillWidthClass = isExpanded ? 'max-w-7xl' : 'w-max'; // w-max ensures the tight fit when collapsed
+  // Horizontal Width Control: Max-w-7xl expanded, Max-w-4xl collapsed (Visibly smaller, medium length)
+  const pillWidthClass = isExpanded ? 'max-w-7xl' : 'max-w-4xl'; 
   
   // Outer Container Styling
   const outerContainerClass = `w-full left-1/2 -translate-x-1/2 mx-auto transition-all duration-700 ease-out ${
@@ -91,13 +93,13 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
     ? 'bg-gray-800/95 shadow-2xl'
     : 'bg-gray-900/90 backdrop-blur-md shadow-xl'; 
   
-  // Vertical Padding Control (CONSTANT/SMALL LENGTH)
+  // Vertical Padding Control (CONSTANT/SMALL LENGTH - Fixed at py-4/py-5)
   const headerPaddingClass = 'py-4 md:py-5'; 
   
   // Text size/color
   const logoTextClass = isExpanded ? 'text-2xl text-white' : 'text-xl text-white';
   
-  // Ensure opacity transition runs smoothly
+  // Opacity transition for links (smooth fade-out)
   const navOpacityClass = isExpanded 
     ? 'opacity-100 transition-opacity duration-500 delay-200'
     : 'opacity-0 pointer-events-none transition-opacity duration-300';
@@ -113,6 +115,7 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
         className={`w-full rounded-full border border-gray-700 transition-all duration-700 ease-out ${innerBgClass} ${headerPaddingClass}`}
       >
         <nav className="mx-auto px-6 max-w-full">
+          {/* Main Content Row: Now explicitly controlling gap to avoid vertical shift */}
           <div className="flex items-center justify-between gap-4 md:gap-8">
             
             {/* GROUP 1: Left - Logo and Name */}
@@ -135,14 +138,12 @@ export default function PremiumHeader({ className = '' }: PremiumHeaderProps) {
 
             {/* GROUP 2: Center - Navigation Links (Desktop ONLY) */}
             <div 
-                // Ensure flex-grow and justify-center are used for correct centering
                 className={`hidden lg:flex items-center justify-center flex-grow gap-10 ${navOpacityClass}`}
             >
                 {NAV_ITEMS.map((item) => (
                     <Link
                         key={item.href}
                         href={item.href}
-                        // Used a large horizontal margin to ensure spacing
                         className={`text-sm transition-colors mx-8 ${ 
                             pathname === item.href
                             ? 'text-white font-medium'
