@@ -173,12 +173,28 @@ body {
 @media (min-width: 1920px) {
   .container {
     max-width: 1800px;
+    padding-left: var(--space-8);
+    padding-right: var(--space-8);
   }
 }
 
 @media (min-width: 2560px) {
   .container {
     max-width: 2400px;
+    padding-left: var(--space-12);
+    padding-right: var(--space-12);
+  }
+}
+
+/* Small mobile devices (< 375px) */
+@media (max-width: 374px) {
+  .container {
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
+
+  body {
+    font-size: 14px;
   }
 }
 
@@ -225,6 +241,33 @@ body {
 @media (min-width: 1280px) {
   .grid-responsive {
     grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Dual screen / ultrawide - 5 or 6 columns for wider layouts */
+@media (min-width: 1920px) {
+  .grid-responsive {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (min-width: 2560px) {
+  .grid-responsive {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* Mobile-optimized grid (forces single column on small screens) */
+.grid-mobile-stack {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .grid-mobile-stack {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
   }
 }
 
@@ -343,4 +386,164 @@ body {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+}
+
+/* Responsive utility classes for better mobile/desktop control */
+
+/* Hide on mobile, show on tablet+ */
+.mobile-hidden {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mobile-hidden {
+    display: block;
+  }
+}
+
+/* Show on mobile, hide on tablet+ */
+.mobile-only {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none;
+  }
+}
+
+/* Desktop only (hide on mobile/tablet) */
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .desktop-only {
+    display: block;
+  }
+}
+
+/* Ultrawide optimizations */
+.ultrawide-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 1920px) {
+  .ultrawide-center {
+    max-width: 1800px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .ultrawide-center {
+    max-width: 2400px;
+  }
+}
+
+/* Responsive text alignment */
+.text-mobile-center {
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .text-mobile-center {
+    text-align: left;
+  }
+}
+
+/* Responsive padding utilities for consistent spacing */
+.px-responsive {
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .px-responsive {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+}
+
+@media (min-width: 1280px) {
+  .px-responsive {
+    padding-left: var(--space-8);
+    padding-right: var(--space-8);
+  }
+}
+
+@media (min-width: 1920px) {
+  .px-responsive {
+    padding-left: var(--space-12);
+    padding-right: var(--space-12);
+  }
+}
+
+/* Responsive vertical spacing */
+.py-responsive {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .py-responsive {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+  }
+}
+
+@media (min-width: 1280px) {
+  .py-responsive {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+  }
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: max(0px)) {
+  .safe-top {
+    padding-top: max(var(--space-4), env(safe-area-inset-top));
+  }
+
+  .safe-bottom {
+    padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  }
+
+  .safe-left {
+    padding-left: max(var(--space-4), env(safe-area-inset-left));
+  }
+
+  .safe-right {
+    padding-right: max(var(--space-4), env(safe-area-inset-right));
+  }
+}
+
+/* Improve mobile scrolling */
+@media (max-width: 767px) {
+  .mobile-scroll-smooth {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
+/* Prevent text from being too wide on ultrawide screens */
+.max-reading-width {
+  max-width: 65ch;
+}
+
+/* Responsive gap utilities */
+.gap-responsive {
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .gap-responsive {
+    gap: var(--space-6);
+  }
+}
+
+@media (min-width: 1280px) {
+  .gap-responsive {
+    gap: var(--space-8);
+  }
 }
