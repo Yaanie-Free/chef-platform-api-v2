@@ -34,10 +34,10 @@ interface NavLinkProps {
 }
 
 const NavLink = memo(({ href, children, onClick, icon }: NavLinkProps) => (
-  <Link 
+  <Link
     href={href}
     onClick={onClick}
-    className="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center gap-2"
+    className="text-xs xl:text-sm desktop:text-base text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap"
   >
     {icon}
     {children}
@@ -184,39 +184,39 @@ const PremiumHeader = ({
     >
       <div className={cn(
         'bg-white border-b border-gray-200 transition-all duration-300',
-        isExpanded ? 'py-4 shadow-sm' : 'py-2'
+        isExpanded ? 'py-3 xs:py-4 md:py-5' : 'py-2 xs:py-2.5 md:py-3'
       )}>
-        <nav 
-          className="mx-auto max-w-7xl px-6"
+        <nav
+          className="mx-auto max-w-7xl desktop:max-w-desktop-lg ultrawide:max-w-ultrawide px-3 xs:px-4 md:px-6 desktop:px-8"
           aria-label="Main navigation"
         >
-          <div className="flex items-center justify-between gap-8">
+          <div className="flex items-center justify-between gap-3 xs:gap-4 md:gap-6 lg:gap-8">
             {/* Left: Logo + Navigation */}
             <div className="flex items-center gap-12">
               {/* Logo */}
-              <Link 
-                href="/" 
+              <Link
+                href="/"
                 className="flex items-center flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-gray-900 rounded"
                 aria-label="Table & Plate home"
               >
-                <span className="text-2xl font-light tracking-tight text-gray-900">
+                <span className="text-lg xs:text-xl md:text-2xl desktop:text-3xl font-light tracking-tight text-gray-900">
                   Table & Plate
                 </span>
               </Link>
 
               {/* Desktop Navigation - Shows when expanded */}
               <div className={cn(
-                'hidden lg:flex items-center gap-8 transition-all duration-300',
+                'hidden lg:flex items-center gap-4 xl:gap-6 desktop:gap-8 transition-all duration-300',
                 isExpanded ? 'opacity-100' : 'opacity-0 pointer-events-none'
               )}>
-                <button 
-                  className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                <button
+                  className="text-xs xl:text-sm desktop:text-base text-gray-600 hover:text-gray-900 transition-colors whitespace-nowrap"
                   onClick={() => router.push('/how-it-works')}
                   aria-label="Learn how it works"
                 >
                   How it works
                 </button>
-                
+
                 <NavLink href="/discover">
                   Find a chef
                 </NavLink>
@@ -248,9 +248,9 @@ const PremiumHeader = ({
             <div className="flex items-center gap-4">
               {/* Search - Desktop only, shows when expanded */}
               {isExpanded && (
-                <SearchBar 
+                <SearchBar
                   onSearch={onSearch}
-                  className="hidden lg:block w-64"
+                  className="hidden lg:block w-48 xl:w-56 desktop:w-64 ultrawide:w-80"
                 />
               )}
 
@@ -284,12 +284,12 @@ const PremiumHeader = ({
                 </div>
               ) : (
                 /* Guest CTAs */
-                <div className="hidden lg:flex items-center gap-3">
+                <div className="hidden lg:flex items-center gap-2 xl:gap-3">
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => router.push('/signup?type=chef')}
-                    className="text-sm text-gray-900 hover:bg-gray-100 transition-colors"
+                    className="text-xs xl:text-sm desktop:text-base text-gray-900 hover:bg-gray-100 transition-colors whitespace-nowrap"
                   >
                     Become a chef
                   </Button>
@@ -298,7 +298,7 @@ const PremiumHeader = ({
                     variant="ghost"
                     size="sm"
                     onClick={() => handleOpenModal('signin')}
-                    className="text-sm text-gray-900 hover:bg-gray-100 transition-colors"
+                    className="text-xs xl:text-sm desktop:text-base text-gray-900 hover:bg-gray-100 transition-colors"
                   >
                     Sign in
                   </Button>
@@ -306,7 +306,7 @@ const PremiumHeader = ({
                   <Button
                     size="sm"
                     onClick={() => handleOpenModal('signup')}
-                    className="bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium px-6 rounded-lg transition-colors uppercase tracking-wide"
+                    className="bg-gray-900 hover:bg-gray-800 text-white text-xs xl:text-sm desktop:text-base font-medium px-4 xl:px-5 desktop:px-6 rounded-lg transition-colors uppercase tracking-wide whitespace-nowrap"
                   >
                     GUEST SIGNUP
                   </Button>
@@ -315,62 +315,62 @@ const PremiumHeader = ({
 
               {/* Mobile Menu Button */}
               <button
-                className="lg:hidden text-gray-900 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="lg:hidden text-gray-900 p-1.5 xs:p-2 hover:bg-gray-100 rounded-lg transition-colors touch-target"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={mobileMenuOpen}
               >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {mobileMenuOpen ? <X className="w-5 h-5 xs:w-6 xs:h-6" /> : <Menu className="w-5 h-5 xs:w-6 xs:h-6" />}
               </button>
             </div>
           </div>
 
           {/* Mobile Search (always visible) */}
-          <div className="lg:hidden mt-3">
+          <div className="lg:hidden mt-2 xs:mt-3">
             <SearchBar onSearch={onSearch} />
           </div>
 
           {/* Mobile Navigation Menu */}
           {mobileMenuOpen && (
-            <div 
-              className="lg:hidden py-4 space-y-4 border-t border-gray-200 mt-4"
+            <div
+              className="lg:hidden py-3 xs:py-4 space-y-3 xs:space-y-4 border-t border-gray-200 mt-3 xs:mt-4 safe-left safe-right"
               role="navigation"
               aria-label="Mobile navigation"
             >
-              <button 
-                className="block w-full text-left text-sm text-gray-600 hover:text-gray-900 py-2"
+              <button
+                className="block w-full text-left text-sm xs:text-base text-gray-600 hover:text-gray-900 py-2 xs:py-2.5 touch-target"
                 onClick={() => router.push('/how-it-works')}
               >
                 How it works
               </button>
-              
-              <NavLink href="/discover">
+
+              <Link href="/discover" className="block w-full text-left text-sm xs:text-base text-gray-600 hover:text-gray-900 py-2 xs:py-2.5 touch-target">
                 Find a chef
-              </NavLink>
+              </Link>
 
               {user && (
-                <NavLink href="/messages">
+                <Link href="/messages" className="block w-full text-left text-sm xs:text-base text-gray-600 hover:text-gray-900 py-2 xs:py-2.5 touch-target flex items-center justify-between">
                   Messages
                   {unreadMessages > 0 && (
                     <span className="ml-2 px-2 py-0.5 bg-red-600 text-white text-xs rounded-full">
                       {unreadMessages}
                     </span>
                   )}
-                </NavLink>
+                </Link>
               )}
 
-              <NavLink href="/signup?type=chef">
+              <Link href="/signup?type=chef" className="block w-full text-left text-sm xs:text-base text-gray-600 hover:text-gray-900 py-2 xs:py-2.5 touch-target">
                 Become a chef
-              </NavLink>
+              </Link>
 
               {user ? (
                 <>
-                  <NavLink href="/profile">
+                  <Link href="/profile" className="block w-full text-left text-sm xs:text-base text-gray-600 hover:text-gray-900 py-2 xs:py-2.5 touch-target">
                     Profile
-                  </NavLink>
+                  </Link>
                   <button
                     onClick={handleSignOut}
-                    className="block w-full text-left text-sm text-gray-600 hover:text-gray-900 py-2"
+                    className="block w-full text-left text-sm xs:text-base text-gray-600 hover:text-gray-900 py-2 xs:py-2.5 touch-target"
                   >
                     Sign out
                   </button>
@@ -380,13 +380,13 @@ const PremiumHeader = ({
                   <Button
                     variant="ghost"
                     onClick={() => handleOpenModal('signin')}
-                    className="w-full justify-start text-sm text-gray-900"
+                    className="w-full justify-start text-sm xs:text-base text-gray-900 touch-target"
                   >
                     Sign in
                   </Button>
                   <Button
                     onClick={() => handleOpenModal('signup')}
-                    className="w-full bg-gray-900 hover:bg-gray-800 text-white uppercase tracking-wide"
+                    className="w-full bg-gray-900 hover:bg-gray-800 text-white text-sm xs:text-base uppercase tracking-wide touch-target"
                   >
                     GUEST SIGNUP
                   </Button>
